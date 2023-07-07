@@ -1,0 +1,68 @@
+.dashboard-container {
+    max-width: 1200px;
+    margin: 30px auto;
+  }
+  
+  .bg-gray {
+    background-color: #f8f8f8; 
+  }
+  
+  /* removed bootstrap color and added color manually for getting a matte finish */
+  .matte-blue {
+    background-color: #6687ad; 
+  }
+  .matte-orange {
+    background-color: #e2a850; 
+  }
+  .matte-red {
+    background-color: #b8615b;
+  }
+  .matte-yellow {
+    background-color: #498e4d;
+  }
+  .matte-headblue {
+    background-color: #544eae;
+  }
+  
+  
+  .card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .list-group {
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .list-group-item {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f8f8f8;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .list-group-item.active {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .list-group-item i {
+    margin-right: 8px;
+  }
+  
+  
