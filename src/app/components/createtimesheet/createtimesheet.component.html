@@ -1,0 +1,100 @@
+<div class="container">
+    <h2>Create Time Sheet</h2>
+    <div class="row border p-4 mt-4">
+        <div class="col-md-3">
+            <div class="border p-4">
+                <div class="dropdown mb-3 text-center"> <!-- Added text-center class -->
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                        {{ getDropdownLabel() }}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" id="custom-dropdown-menu">
+                        <a class="dropdown-item" (click)="selectFirstHalf()">First 15 days</a>
+                        <a class="dropdown-item" (click)="selectSecondHalf()">Remaining days</a>
+                    </div>
+                </div>
+
+                <!-- Left and right arrow section -->
+                <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-secondary" (click)="prevMonth()">&lt;</button>
+                    <h5>{{ getCurrentMonthName() }} {{ selectedDate.year }}</h5>
+                    <button class="btn btn-secondary" (click)="nextMonth()">&gt;</button>
+                </div> -->
+
+                <!-- Date picker section -->
+                <div class="text-center">
+                    <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
+                        [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
+                        class="custom-datepicker">
+                        <ng-template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+                            let-disabled="disabled" let-focused="focused">
+                            <div class="custom-day" [class.current-month]="currentMonth" [class.selected]="selected"
+                                [class.active]="isDayActive(date)" [class.first-half]="isFirstHalf(date)"
+                                [class.highlighted]="isHighlighted(date)">
+                                {{ date.day }}
+                            </div>
+                        </ng-template>
+                    </ngb-datepicker>
+                </div>
+
+                <!-- comment section -->
+                <div class="form-group"><br>
+                    <label for="comment">Comments</label>
+                    <textarea class="form-control" id="comment" rows="5"></textarea>
+                </div>
+
+                <!-- Legend section -->
+                <div class="border p-4 mt-4 custom-legend">
+                    <h5>Legend:</h5>
+
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-success d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Active Cells</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-secondary d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Inactive Cells</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-warning d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Holidays</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <button class="btn btn-primary btn-sm mr-2 d-flex align-items-center justify-content-center"
+                            style="width: 20px; height: 20px;">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <span style="padding-left:5px">Add</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <button class="btn btn-danger btn-sm mr-2 d-flex align-items-center justify-content-center"
+                            style="width: 20px; height: 20px;">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                        <span style="padding-left:5px">Delete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- right side section -->
+        <div class="col-md-9">
+            <div class="border p-4 d-flex align-items-center">
+                <div class="mr-3">
+                    <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0" style="padding-left:5px">Shinto Chandy</h5>
+                </div>
+            </div>
+            <div class="border p-4 mt-4">
+                <form>
+                    <!-- Your form fields here -->
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
