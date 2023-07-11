@@ -3,37 +3,39 @@
     <div class="row border p-4 mt-4">
         <div class="col-md-3">
             <div class="border p-4">
-                <div class="dropdown mb-3 text-center"> <!-- Added text-center class -->
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
-                        {{ getDropdownLabel() }}
+                <!-- drop down on top section -->
+                <div class="dropdown mb-3 text-center">
+                    <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-calendar2-week mr-2"></i>
+                        <span class="ms-1 small">{{ getDropdownLabel() }}</span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right" id="custom-dropdown-menu">
-                        <a class="dropdown-item" (click)="selectFirstHalf()">First 15 days</a>
-                        <a class="dropdown-item" (click)="selectSecondHalf()">Remaining days</a>
-                    </div>
-                </div>
 
-                <!-- Left and right arrow section -->
-                <!-- <div class="d-flex justify-content-between align-items-center mb-3">
-                    <button class="btn btn-secondary" (click)="prevMonth()">&lt;</button>
-                    <h5>{{ getCurrentMonthName() }} {{ selectedDate.year }}</h5>
-                    <button class="btn btn-secondary" (click)="nextMonth()">&gt;</button>
-                </div> -->
+                    <ul class="dropdown-menu w-100">
+                        <li><a class="dropdown-item" (click)="selectFirstHalf()">01-{{ getCurrentMonthName().substr(0,
+                                3) }}-{{ selectedDate.year }} to 15-{{ getCurrentMonthName().substr(0, 3) }}-{{
+                                selectedDate.year }}</a></li>
+                        <li><a class="dropdown-item" (click)="selectSecondHalf()">16-{{ getCurrentMonthName().substr(0,
+                                3) }}-{{ selectedDate.year }} to {{ getLastDayOfMonth() }}-{{
+                                getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}</a></li>
+                    </ul>
+                </div>
 
                 <!-- Date picker section -->
                 <div class="text-center">
-                    <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
-                        [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
-                        class="custom-datepicker">
-                        <ng-template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
-                            let-disabled="disabled" let-focused="focused">
-                            <div class="custom-day" [class.current-month]="currentMonth" [class.selected]="selected"
-                                [class.active]="isDayActive(date)" [class.first-half]="isFirstHalf(date)"
-                                [class.highlighted]="isHighlighted(date)">
-                                {{ date.day }}
-                            </div>
-                        </ng-template>
-                    </ngb-datepicker>
+                    <div class="text-center">
+                        <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
+                            [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
+                            class="custom-datepicker" (ngModelChange)="generateWeekButtons()">
+                            <ng-template #customDay let-date="date" let-currentMonth="currentMonth"
+                                let-selected="selected" let-disabled="disabled" let-focused="focused">
+                                <div class="custom-day" [class.current-month]="currentMonth" [class.selected]="selected"
+                                    [class.highlighted]="isHighlighted(date)">
+                                    {{ date.day }}
+                                </div>
+                            </ng-template>
+                        </ngb-datepicker>
+                    </div>
                 </div>
 
                 <!-- comment section -->
@@ -62,17 +64,17 @@
                         <span style="padding-left:5px">Holidays</span>
                     </div>
                     <div class="d-flex align-items-center mt-3">
-                        <button class="btn btn-primary btn-sm mr-2 d-flex align-items-center justify-content-center"
+                        <span class="btn btn-primary btn-sm mr-2 d-flex align-items-center justify-content-center"
                             style="width: 20px; height: 20px;">
                             <i class="bi bi-plus"></i>
-                        </button>
+                        </span>
                         <span style="padding-left:5px">Add</span>
                     </div>
                     <div class="d-flex align-items-center mt-3">
-                        <button class="btn btn-danger btn-sm mr-2 d-flex align-items-center justify-content-center"
+                        <span class="btn btn-danger btn-sm mr-2 d-flex align-items-center justify-content-center"
                             style="width: 20px; height: 20px;">
                             <i class="bi bi-trash"></i>
-                        </button>
+                        </span>
                         <span style="padding-left:5px">Delete</span>
                     </div>
                 </div>
@@ -81,20 +83,119 @@
 
         <!-- right side section -->
         <div class="col-md-9">
-            <div class="border p-4 d-flex align-items-center">
-                <div class="mr-3">
-                    <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
+            <div class="border p-4 border-right-4" style="width: calc(100% + 8px);">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0" style="padding-left: 5px" ngbPopover="{{ contactCardContent }}"
+                                popoverTitle="Contact Card" #contactCard="ngbPopover"
+                                triggers="mouseenter:showContactCard(contactCard); mouseleave:hideContactCard(contactCard)">
+                                Shinto Chandy
+                            </h5>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex flex-wrap">
+                            <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded">{{ week
+                                }}</button>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h5 class="mb-0" style="padding-left:5px">Shinto Chandy</h5>
+
+                <div class="mt-4">
+                    <div class="row border bg-light">
+                        <div class="col py-1 d-flex align-items-center justify-content-center">
+                            <h6 class="fw-bold">Project Name</h6>
+                            <!-- Add project name content here -->
+                        </div>
+                        <div class="col-8 py-2 border-right">
+                            <!-- Display the days of the week -->
+                            <div class="d-flex align-items-center justify-content-center">
+                                <ng-container *ngFor="let day of daysOfWeek">
+                                    <div class="text-center me-4">
+                                        <div class="fw-bold">{{ day | date: 'EEE' }}</div>
+                                        <div class="fw-bold">{{ day | date: 'd MMM' }}</div>
+                                    </div>
+                                    <div class="ms-3"></div> <!-- Add space between days using ms-4 class -->
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
+                            <h6 class="fw-bold">Total</h6>
+                            <!-- Total count here -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col py-2 d-flex align-items-center justify-content-center">
+                            <select class="form-select">
+                                <option selected>Select Project</option>
+                                <option>Uprime</option>
+                                <option>Uprime R&D</option>
+                                <option>Open Therapeutics</option>
+                                <option>Shankar Distillers</option>
+                                <option>Vacations</option>
+                                <option>Holidays</option>
+                                <!-- Add more project options if needed -->
+                            </select>
+                        </div>
+
+                        <div class="col-8 py-2 border-right">
+                            <div class="d-flex align-items-center">
+                                <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
+                                <ng-container *ngFor="let weekDay of weekDays">
+                                    <input type="text" class="form-control mx-1" style="width: 70px;" pattern="[0-9]*"
+                                        inputmode="numeric" placeholder="0.00">
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
+                            <div class="sum-box">
+                                <span class="fw-bold" id="totalSum">0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 py-2 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <button type="button" class="btn btn-secondary btn-sm mx-2"
+                                        (click)="clearTextFields()">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm mx-2">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm mx-2">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="border p-4 mt-4">
-                <form>
-                    <!-- Your form fields here -->
-                </form>
+
+            <!-- Button Section -->
+            <div class="mt-4 d-flex justify-content-center fs-6">
+                <button type="button" class="btn btn-primary mx-2">BACK</button>
+                <button type="button" class="btn btn-secondary mx-2">SAVE</button>
+                <button type="button" class="btn btn-success mx-2">SUBMIT</button>
+                <button #yourButton class="btn btn-danger mx-2 custom-btn">
+                    NEXT
+                    <span class="animation-container"></span>
+                </button>
             </div>
         </div>
-
     </div>
+</div>
+
+
+<!-- Copyright -->
+<div class="text-center text-dark p-3">
+    © 2023 Copyright :
+    <a class="text-dark" href="https://www.v2soft.com/">V2Soft.com</a>
 </div>

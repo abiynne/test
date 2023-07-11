@@ -12,6 +12,7 @@ import { LastTimesheetComponent } from './components/last-timesheet/last-timeshe
 import { LastSubmittedTimesheetComponent } from './components/last-submitted-timesheet/last-submitted-timesheet.component';
 import { MyTimesheetsComponent } from './components/my-timesheets/my-timesheets.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    BsDatepickerModule.forRoot(),
   ],
   providers: [TimesheetService],
   bootstrap: [AppComponent]
