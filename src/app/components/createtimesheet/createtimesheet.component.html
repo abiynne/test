@@ -90,11 +90,14 @@
                             <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
                         </div>
                         <div>
-                            <h5 class="mb-0" style="padding-left: 5px" ngbPopover="{{ contactCardContent }}"
-                                popoverTitle="Contact Card" #contactCard="ngbPopover"
-                                triggers="mouseenter:showContactCard(contactCard); mouseleave:hideContactCard(contactCard)">
-                                Shinto Chandy
-                            </h5>
+                            <div class="mb-0" style="padding-left: 5px" (mouseenter)="showContactCard()"
+                                (mouseleave)="hideContactCard()">
+                                <span>
+                                    Shinto Chandy
+                                </span>
+                            </div>
+                            <div *ngIf="isContactCardVisible" [innerHTML]="contactCardContent" ngbPopover="Contact Card"
+                                popoverTitle="Contact Card" #contactCard="ngbPopover" triggers="manual"></div>
                         </div>
                     </div>
                     <div>
@@ -129,33 +132,31 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <!-- Section for emp data entry -->
+                    <div class="row" *ngFor="let row of rows; let i = index" [id]="'row-' + i">
                         <div class="col py-2 d-flex align-items-center justify-content-center">
+
                             <select class="form-select">
-                                <option selected>Select Project</option>
-                                <option>Uprime</option>
-                                <option>Uprime R&D</option>
-                                <option>Open Therapeutics</option>
-                                <option>Shankar Distillers</option>
-                                <option>Vacations</option>
-                                <option>Holidays</option>
-                                <!-- Add more project options if needed -->
+                                <option disabled selected hidden>Select Project</option>
+                                <option *ngFor="let project of projects" [value]="project">{{ project }}</option>
                             </select>
+
                         </div>
 
                         <div class="col-8 py-2 border-right">
                             <div class="d-flex align-items-center">
                                 <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
-                                <ng-container *ngFor="let weekDay of weekDays">
-                                    <input type="text" class="form-control mx-1" style="width: 70px;" pattern="[0-9]*"
-                                        inputmode="numeric" placeholder="0.00">
+                                <ng-container *ngFor="let weekDay of weekDays; let j = index">
+                                    <div class="col">
+                                        <input type="text" class="form-control mx-1" style="width: 70px;" pattern="[0-9]*" inputmode="numeric" placeholder="0.00" [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" />
+                                        </div>
                                 </ng-container>
                             </div>
                         </div>
 
                         <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
                             <div class="sum-box">
-                                <span class="fw-bold" id="totalSum">0.00</span>
+                                <span class="fw-bold" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours) }}</span>
                             </div>
                         </div>
 
@@ -163,13 +164,14 @@
                             <div class="col-12 py-2 d-flex align-items-center justify-content-between">
                                 <div>
                                     <button type="button" class="btn btn-secondary btn-sm mx-2"
-                                        (click)="clearTextFields()">
+                                        (click)="clearTextFields(i)">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm mx-2">
+
+                                    <button type="button" class="btn btn-primary btn-sm mx-2" (click)="addRow()">
                                         <i class="bi bi-plus"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-sm mx-2">
+                                    <button type="button" class="btn btn-danger btn-sm mx-2" (click)="deleteRow(i)">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -181,10 +183,10 @@
 
             <!-- Button Section -->
             <div class="mt-4 d-flex justify-content-center fs-6">
-                <button type="button" class="btn btn-primary mx-2">BACK</button>
+                <button type="button" class="btn btn-primary mx-2" (click)="goToDashboard()">BACK</button>
                 <button type="button" class="btn btn-secondary mx-2">SAVE</button>
                 <button type="button" class="btn btn-success mx-2">SUBMIT</button>
-                <button #yourButton class="btn btn-danger mx-2 custom-btn">
+                <button #arrowButton class="btn btn-danger mx-2 custom-btn">
                     NEXT
                     <span class="animation-container"></span>
                 </button>
@@ -192,7 +194,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Copyright -->
 <div class="text-center text-dark p-3">

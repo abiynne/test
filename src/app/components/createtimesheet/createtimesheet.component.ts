@@ -2,9 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { NgbCalendar, NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import lottie from 'lottie-web';
-
 
 @Component({
   selector: 'app-createtimesheet',
@@ -21,14 +21,25 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   dropdownLabel: string = '';
   weeks: string[] = []; // for weeks
   isContactCardVisible: boolean = false; // for contact card
-  contactCardContent: SafeHtml = '';
+  contactCardContent: SafeHtml | null = null; //for contact card content
   daysOfWeek!: Date[]; // Array to hold days of the week
   weekDays: number[] = [1, 2, 3, 4, 5, 6, 7];
   defaultTotalSum: string = '0.00';
-  @ViewChild('yourButton', { static: false }) yourButton!: ElementRef<HTMLButtonElement>;
+  rows: any[] = []; //for DOM add or remove rows
+  @ViewChild('arrowButton', { static: false }) arrowButton!: ElementRef<HTMLButtonElement>;
+  // for adding rows based on the dropdown count
+  selectedProject: string = '';
+  projects: string[] = [
+    'Uprime',
+    'Uprime R&D',
+    'Open Therapeutics',
+    'Shankar Distillers',
+    'Vacations',
+    'Holidays'
+    // Add more project options if needed
+  ];
 
-
-  constructor(private calendar: NgbCalendar, private dateParser: NgbDateParserFormatter, private sanitizer: DomSanitizer) {
+  constructor(private calendar: NgbCalendar, private dateParser: NgbDateParserFormatter, private sanitizer: DomSanitizer, private router: Router) {
     const today = this.calendar.getToday();
     this.selectedDate = today;
     this.minDate = this.calendar.getPrev(this.calendar.getToday(), 'y', 5) as NgbDate; // Update to 10 years before current year
@@ -42,27 +53,29 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.contactCardContent = this.sanitizer.bypassSecurityTrustHtml(`
+    const cardContent = `
       <div class="card" style="width: 18rem;">
         <div class="card-header">
-          <i class="bi bi-person-circle text-primary" style="font-size: 80px;"></i>
+          <i class="bi bi-person-circle text-primary" style="font-size: 50px;"></i>
         </div>
         <div class="card-body">
           <h5 class="card-title">Shinto Chandy</h5>
-          <p class="card-text">Mobile: 1234567890</p>
-          <p class="card-text">Work: 9876543210</p>
-          <p class="card-text">Email: example@example.com</p>
+          <p class="card-text">Mobile No.: 1234567890</p>
+          <p class="card-text">Work No.: 0987654321</p>
+          <p class="card-text">Email: schandy@v2soft.com</p>
         </div>
       </div>
-    `);
+    `;
+    this.contactCardContent = this.sanitizer.bypassSecurityTrustHtml(cardContent);
     this.daysOfWeek = this.getDaysOfWeek();
+    this.addRow(); // Add an initial row when the component initializes
   }
 
   ngAfterViewInit() {
     const inputs = $('input[type="text"]');
     const totalSum = $('#totalSum');
-    const buttonElement = this.yourButton.nativeElement;
-    const animationContainer = buttonElement.querySelector('.animation-container') as Element;
+    const buttonElement = this.arrowButton.nativeElement;
+    const animationContainer = buttonElement.querySelector('.animation-container') as Element;  // for lottie animation
 
     inputs.on('input', () => {
       let sum = 0;
@@ -85,28 +98,79 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // for clearing the input that was entered from th text field and from sum  field
-  clearTextFields() {
-    const inputs = $('input[type="text"]');
-    inputs.val(''); // Clear the input field values
-
-    let sum = 0;
-    inputs.each((index, input) => {
-      const value = parseFloat($(input).val() as string);
-      if (!isNaN(value)) {
-        sum += value;
+  addRow() {
+    const dropdownCount = this.projects.length;
+    if (this.rows.length < dropdownCount) {
+      const newRow: { project: string, hours: string[] } = { project: this.selectedProject, hours: [] };
+      for (let i = 0; i < this.daysOfWeek.length; i++) {
+        newRow.hours.push(''); // Initialize hours array with empty values
       }
+      this.rows.push(newRow);
+      const newRowIdx = this.rows.length - 1;
+      this.clearTextFields(newRowIdx); // Call clearTextFields for the newly added row
+      this.calculateTotalSum(); // Calculate the total sum again
+    }
+  }
+
+  deleteRow(index: number) {
+    if (index > 0) {
+      this.rows.splice(index, 1); // Remove the row at the specified index
+    }
+  }
+
+  calculateTotalSum() {
+    this.rows.forEach((row, rowIndex) => {
+      let sum = 0;
+      const inputs = $(`#row-${rowIndex} input[type="text"]`);
+  
+      inputs.each((index, input) => {
+        const value = parseFloat($(input).val() as string);
+        if (!isNaN(value)) {
+          sum += value;
+        }
+      });
+  
+      const totalSum = $(`#totalSum-${rowIndex}`);
+      totalSum.text(sum.toFixed(2));
     });
-    $('#totalSum').text(sum.toFixed(2));
+  }
+  
+
+  calculateRowTotal(hours: string[]): string {
+    let sum = 0;
+    for (let i = 0; i < hours.length; i++) {
+        const value = parseFloat(hours[i]);
+        if (!isNaN(value)) {
+            sum += value;
+        }
+    }
+    return sum.toFixed(2);
+}
+
+  // for clearing the input that was entered from th text field and from sum  field
+  clearTextFields(rowIndex: number) {
+  const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
+  rowInputs.val('');
+
+  const sum = 0;
+  const totalSum = $(`#totalSum-${rowIndex}`);
+  totalSum.text(sum.toFixed(2));
+
+  const selectElement = $(`#row-${rowIndex} select.form-select`);
+  selectElement.prop('selectedIndex', 0);
+}
+
+
+
+
+  showContactCard() {
+    this.isContactCardVisible = true;
   }
 
-  showContactCard(contactCard: any) {
-    contactCard.open();
+  hideContactCard() {
+    this.isContactCardVisible = false;
   }
 
-  hideContactCard(contactCard: any) {
-    contactCard.close();
-  }
 
   getDaysOfWeek(): Date[] {
     const startDate = new Date(); // Use the desired start date
@@ -257,6 +321,11 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       weekEnd = Math.min(weekStart + 6, lastWeekEndDate);
     }
   }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
 
 }
 

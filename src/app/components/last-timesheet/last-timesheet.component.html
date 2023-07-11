@@ -1,1 +1,121 @@
-<p>last-timesheet works!</p>
+<!-- <p>last-timesheet works!</p> -->
+
+<div>  
+    <div class="row border p-4 mv-4">
+        <div class="col-md-3">
+            <div class="custom-border p-4">
+
+                <!-- Drop Down Options -->
+                <div class="d-flex align-items-center">
+                    <!-- add the drop down here -->
+                </div>
+
+                <!-- Calendar -->
+                <input type="date" id="calendarInput" style="border: none; padding: 0;">
+
+                <!-- Comment -->
+                <div class="form-group text-danger"><br>
+                    <label for="comment">Comments</label>
+                    <textarea class="form-control" id="comment" rows="5"></textarea>
+                </div>
+
+                <!-- legend box -->
+                <div class="legend-box">
+                    <div class="legend-row">
+                        <div class="legend-rectangle legend-green"></div>
+                        <span class="legend-label">Holiday</span>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-rectangle legend-orange"></div>
+                        <span class="legend-label">Total</span>
+                    </div>
+                    <div class="legend-row">
+                        <div class="legend-rectangle legend-gray"></div>
+                        <span class="legend-label">Inactive cell</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-icon">
+                            <i class="bi bi-plus-circle"></i>
+                        </span>
+                        <span class="legend-label">Add row</span>
+                    </div>
+                    <div class="legend-row">
+                        <span class="legend-icon">
+                            <i class="bi bi-trash"></i>
+                        </span>
+                        <span class="legend-label">Delete row</span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- right side section -->
+        <div class="col-md-9">
+            <div class="p-4 border-right-4" style="width: calc(100% + 8px);">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
+                        </div>
+                        <div>
+                            <span>simmy sebastian</span>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- here ad weeks contents -->
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="row border bg-light">
+                        <div class="col py-1 d-flex align-items-center justify-content-center">
+                            <h6 class="fw-bold">Project Name</h6>
+                            <!-- Add project name content here -->
+                        </div>
+                        <div class="col-8 py-2 border-right">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <!-- display days of -->
+                            </div>
+                        </div>
+                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
+                            <h6 class="fw-bold">Total</h6>
+                            <!-- Total count here -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col py-2 d-flex align-items-center justify-content-center">
+                            <select class="form-select">
+                                <option selected>Select Project</option>
+                                <option>Uprime</option>
+                                <option>Shankar Distillers</option>
+                                <option>Vacations</option>
+                                <option>Holidays</option>
+                                <!-- Add more project options if needed -->
+                            </select>
+                        </div>
+
+                        <div class="col-8 py-2 border-right">
+                            <div class="d-flex align-items-center">
+                                <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
+                                <ng-container *ngFor="let weekDay of weekDays">
+                                    <input type="text" class="form-control mx-1" style="width: 70px;" pattern="[0-9]*"
+                                        inputmode="numeric" placeholder="0.00">
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
+                            <div class="sum-box">
+                                <span class="fw-bold" id="totalSum">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

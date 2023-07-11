@@ -1,0 +1,67 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .custom-border {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .profile-icon {
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    margin-left: 0.75rem; /* Added margin to separate the icon from the dropdown */
+  }
+  
+  .legend-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  .legend-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .legend-rectangle {
+    width: 20px;
+    height: 10px;
+    margin-right: 5px;
+  }
+  
+  .legend-green {
+    background-color: rgba(0, 128, 0, 0.342);
+  }
+  
+  .legend-orange {
+    background-color: rgba(255, 166, 0, 0.333);
+  }
+  
+  .legend-gray {
+    background-color: gray;
+  }
+  
+  .legend-icon {
+    font-size: 1rem;
+    color: #000;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .curved-rectangles {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .curved-rectangle {
+    width: 80px;
+    height: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-right: 5px;
+  }
