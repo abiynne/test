@@ -53,20 +53,20 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    const cardContent = `
-      <div class="card" style="width: 18rem;">
-        <div class="card-header">
-          <i class="bi bi-person-circle text-primary" style="font-size: 50px;"></i>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Shinto Chandy</h5>
-          <p class="card-text">Mobile No.: 1234567890</p>
-          <p class="card-text">Work No.: 0987654321</p>
-          <p class="card-text">Email: schandy@v2soft.com</p>
-        </div>
-      </div>
-    `;
-    this.contactCardContent = this.sanitizer.bypassSecurityTrustHtml(cardContent);
+    // const cardContent = `
+    //   <div class="card" style="width: 18rem;">
+    //     <div class="card-header">
+    //       <i class="bi bi-person-circle text-primary" style="font-size: 50px;"></i>
+    //     </div>
+    //     <div class="card-body">
+    //       <h5 class="card-title">Shinto Chandy</h5>
+    //       <p class="card-text">Mobile No.: 1234567890</p>
+    //       <p class="card-text">Work No.: 0987654321</p>
+    //       <p class="card-text">Email: schandy@v2soft.com</p>
+    //     </div>
+    //   </div>
+    // `;
+    // this.contactCardContent = this.sanitizer.bypassSecurityTrustHtml(cardContent);
     this.daysOfWeek = this.getDaysOfWeek();
     this.addRow(); // Add an initial row when the component initializes
   }
@@ -97,7 +97,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       autoplay: true
     });
   }
-
+ 
   addRow() {
     const dropdownCount = this.projects.length;
     if (this.rows.length < dropdownCount) {
@@ -160,17 +160,13 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   selectElement.prop('selectedIndex', 0);
 }
 
+  // showContactCard() {
+  //   this.isContactCardVisible = true;
+  // }
 
-
-
-  showContactCard() {
-    this.isContactCardVisible = true;
-  }
-
-  hideContactCard() {
-    this.isContactCardVisible = false;
-  }
-
+  // hideContactCard() {
+  //   this.isContactCardVisible = false;
+  // }
 
   getDaysOfWeek(): Date[] {
     const startDate = new Date(); // Use the desired start date

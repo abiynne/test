@@ -89,16 +89,36 @@
                         <div class="mr-3">
                             <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
                         </div>
-                        <div>
-                            <div class="mb-0" style="padding-left: 5px" (mouseenter)="showContactCard()"
-                                (mouseleave)="hideContactCard()">
-                                <span>
-                                    Shinto Chandy
-                                </span>
-                            </div>
-                            <div *ngIf="isContactCardVisible" [innerHTML]="contactCardContent" ngbPopover="Contact Card"
-                                popoverTitle="Contact Card" #contactCard="ngbPopover" triggers="manual"></div>
+                        
+                        <div class="mb-0" style="padding-left: 5px">
+                            <span class="contact-name" [ngbPopover]="contactCardContent" [placement]="'bottom'"
+                                triggers="mouseenter">Shinto Chandy</span>
                         </div>
+
+                        <!-- for displaying the contact card contents  -->
+                        <ng-template #contactCardContent>
+                            <div class="card" style="width: 16rem;">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="bi bi-person-circle" style="font-size: 50px;"></i>
+                                </div>
+                                <div class="card-body pr-4">
+                                    <h5 class="card-title mb-4">Shinto Chandy</h5>
+                                    <div class="mb-3">
+                                        <i class="bi bi-phone-fill text-primary"></i>
+                                        <span class="ms-2">Mobile No: 1234567890</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-telephone-fill text-primary"></i>
+                                        <span class="ms-2">Work No: 0987654321</span>
+                                    </div>
+                                    <div>
+                                        <i class="bi bi-envelope-fill text-primary"></i>
+                                        <span class="ms-2">Email: schandy@v2soft.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
                     </div>
                     <div>
                         <div class="d-flex flex-wrap">
@@ -148,8 +168,10 @@
                                 <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
                                 <ng-container *ngFor="let weekDay of weekDays; let j = index">
                                     <div class="col">
-                                        <input type="text" class="form-control mx-1" style="width: 70px;" pattern="[0-9]*" inputmode="numeric" placeholder="0.00" [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" />
-                                        </div>
+                                        <input type="text" class="form-control mx-1" style="width: 70px;"
+                                            pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
+                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" />
+                                    </div>
                                 </ng-container>
                             </div>
                         </div>
