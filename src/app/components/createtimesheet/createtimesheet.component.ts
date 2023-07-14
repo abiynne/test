@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import lottie from 'lottie-web';
+import { WeekDay } from '@angular/common';
 
 @Component({
   selector: 'app-createtimesheet',
@@ -109,10 +110,10 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   deleteRow(index: number) {
     if (index > 0) {
       this.rows.splice(index, 1); // Remove the row at the specified index
-      this.updateTotalSum(); 
+      this.updateTotalSum();
     }
   }
-  
+
 
   calculateTotalSum() {
     this.rows.forEach((row, rowIndex) => {
@@ -159,7 +160,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   calculateColumnTotal(weekDay: number): string {
     let sum = 0;
     this.rows.forEach((row) => {
-      const value = parseFloat(row.hours[weekDay - 1]);
+      const value = parseFloat(row.hours[weekDay - 1]) || 0; // Consider empty text field as 0
       if (!isNaN(value)) {
         sum += value;
       }
@@ -173,23 +174,29 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   clearTextFields(rowIndex: number) {
     const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
     rowInputs.val('');
-  
-    const totalSum = 0;
+
     const totalSumElement = $(`#totalSum-${rowIndex}`);
-    totalSumElement.text(totalSum.toFixed(2));
-  
+    totalSumElement.text('0.00');
+
     const selectElement = $(`#row-${rowIndex} select.form-select`);
     selectElement.prop('selectedIndex', 0);
-  
+
+    this.calculateTotalSum(); // Recalculate the total sum
+
+    // Clear the column total values for the refreshed row
     for (let weekDay = 1; weekDay <= this.weekDays.length; weekDay++) {
-      const columnTotal = this.calculateColumnTotal(weekDay);
+      this.columnTotalSum[weekDay - 1] -= parseFloat(this.rows[rowIndex].hours[weekDay - 1]) || 0;
+      this.rows[rowIndex].hours[weekDay - 1] = ''; // Clear the text field value
+    }
+
+    // Update the column total elements in the UI
+    for (let weekDay = 1; weekDay <= this.weekDays.length; weekDay++) {
+      const columnTotal = this.columnTotalSum[weekDay - 1].toFixed(2);
       const columnTotalElement = $(`#totalSum-${weekDay}`);
       columnTotalElement.text(columnTotal);
     }
-  
-    this.calculateTotalSum(); // Recalculate the total sum
   }
-  
+
   generateWeekDays() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
     const startDay = startDate.getDate();

@@ -120,7 +120,7 @@
                         </ng-template>
                     </div>
                     <div class="d-flex flex-wrap">
-                        <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded"
+                        <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded   "
                             (click)="showDays(week)">
                             {{ week.start }} {{ getCurrentMonthName() | slice:0:3 }} to {{ week.end }} {{
                             getCurrentMonthName() | slice:0:3 }}
@@ -136,7 +136,7 @@
                         </div>
                         <div class="col-8 py-1 border-right">
                             <!-- Display the days of the week inside the border-->
-                            <div class="d-flex ms-1 align-items-center justify-content-center">
+                            <div class="d-flex ms-1 align-items-center justify-content-end">
                                 <ng-container *ngFor="let day of daysOfWeek">
                                     <div class="text-center mx-2">
                                         <div class="fw-bold">{{ day | date: 'EEE' }}</div>
@@ -170,7 +170,7 @@
                                     <div class="col">
                                         <input type="text" class="form-control mx-1" style="width: 70px;"
                                             pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
-                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" />
+                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="3" />
                                     </div>
                                 </ng-container>
                             </div>
@@ -181,10 +181,10 @@
                             <div class="position-relative">
                                 <div class="sum-box">
                                     <span class="fw-bold" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours) }}</span>
-
                                     <i class="mx-4 bi bi-three-dots-vertical text-bold rounded shadow-hover btn btn-outline-secondary btn-sm"
                                         style="cursor: pointer;" data-bs-toggle="dropdown"></i>
 
+                                    <!-- below we have buttons when click the 3 dots  -->
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
                                             <i
