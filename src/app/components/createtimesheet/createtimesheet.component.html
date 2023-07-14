@@ -178,26 +178,30 @@
 
                         <!-- for calculating the values in newly created rows  -->
                         <div class="col-2 py-3 d-flex flex-column align-items-center justify-content-start">
-                            <div class="sum-box">
-                                <span class="fw-bold" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours) }}</span>
-                                <i class="mx-4 bi bi-three-dots-vertical text-bold rounded shadow-hover btn btn-outline-secondary btn-sm"
-                                    style="cursor: pointer;" data-bs-toggle="dropdown"></i>
+                            <div class="position-relative">
+                                <div class="sum-box">
+                                    <span class="fw-bold" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours) }}</span>
 
-                                <div class="dropdown-menu">
-                                    <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
-                                        <i class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
-                                        <span class="fw-bold small mx-1">Clear</span>
-                                    </button>
-                                    <button type="button" class="dropdown-item" (click)="addRow()">
-                                        <i class="btn btn-primary custom-btn-size bi bi-plus"></i>
-                                        <span class="fw-bold small mx-1">Add Row</span>
-                                    </button>
-                                    <button type="button" class="dropdown-item" *ngIf="i > 0" (click)="deleteRow(i)">
-                                        <i class="btn btn-danger custom-btn-size bi bi-trash"></i>
-                                        <span class="fw-bold small mx-1">Delete</span>
-                                    </button>
+                                    <i class="mx-4 bi bi-three-dots-vertical text-bold rounded shadow-hover btn btn-outline-secondary btn-sm"
+                                        style="cursor: pointer;" data-bs-toggle="dropdown"></i>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
+                                            <i
+                                                class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
+                                            <span class="fw-bold small mx-1">Clear</span>
+                                        </button>
+                                        <button type="button" class="dropdown-item" (click)="addRow()">
+                                            <i class="btn btn-primary custom-btn-size bi bi-plus"></i>
+                                            <span class="fw-bold small mx-1">Add Row</span>
+                                        </button>
+                                        <button type="button" class="dropdown-item" *ngIf="i > 0"
+                                            (click)="deleteRow(i)">
+                                            <i class="btn btn-danger custom-btn-size bi bi-trash"></i>
+                                            <span class="fw-bold small mx-1">Delete</span>
+                                        </button>
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
