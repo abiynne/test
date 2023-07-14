@@ -2,16 +2,16 @@
     <h2>Create Time Sheet</h2>
     <div class="row border p-4 mt-4">
         <div class="col-md-3">
-            <div class="border p-4">
+            <div class="border p-4 short-width" style="margin-left: -16px;">
                 <!-- drop down on top section -->
-                <div class="dropdown mb-3 text-center">
+                <div class="dropdown mb-4 text-center align-items-center">
                     <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-calendar2-week mr-2"></i>
                         <span class="ms-1 small">{{ getDropdownLabel() }}</span>
                     </button>
 
-                    <ul class="dropdown-menu w-100">
+                    <ul class="dropdown-menu w-100 align-items-center">
                         <li><a class="dropdown-item" (click)="selectFirstHalf()">01-{{ getCurrentMonthName().substr(0,
                                 3) }}-{{ selectedDate.year }} to 15-{{ getCurrentMonthName().substr(0, 3) }}-{{
                                 selectedDate.year }}</a></li>
@@ -23,7 +23,7 @@
 
                 <!-- Date picker section -->
                 <div class="text-center">
-                    <div class="text-center">
+                    <div class="align-items-center justify-content-center">
                         <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
                             [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
                             class="custom-datepicker" (ngModelChange)="generateWeekButtons()">
@@ -83,13 +83,13 @@
 
         <!-- right side section -->
         <div class="col-md-9">
-            <div class="border p-4 border-right-4" style="width: calc(100% + 8px);">
+            <div class="border p-4 border-right-4" style="margin-left: -40px;">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
                             <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
                         </div>
-                        
+
                         <div class="mb-0" style="padding-left: 5px">
                             <span class="contact-name" [ngbPopover]="contactCardContent" [placement]="'bottom'"
                                 triggers="mouseenter">Shinto Chandy</span>
@@ -102,7 +102,7 @@
                                     <i class="bi bi-person-circle" style="font-size: 50px;"></i>
                                 </div>
                                 <div class="card-body pr-4">
-                                    <h5 class="card-title mb-4">Shinto Chandy</h5>
+                                    <h5 class="card-title mb-4 fw-bold">Shinto Chandy</h5>
                                     <div class="mb-3">
                                         <i class="bi bi-phone-fill text-primary"></i>
                                         <span class="ms-2">Mobile No: 1234567890</span>
@@ -118,27 +118,27 @@
                                 </div>
                             </div>
                         </ng-template>
-
                     </div>
-                    <div>
-                        <div class="d-flex flex-wrap">
-                            <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded">{{ week
-                                }}</button>
-                        </div>
+                    <div class="d-flex flex-wrap">
+                        <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded"
+                            (click)="showDays(week)">
+                            {{ week.start }} {{ getCurrentMonthName() | slice:0:3 }} to {{ week.end }} {{
+                            getCurrentMonthName() | slice:0:3 }}
+                        </button>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <div class="row border bg-light">
+                <div class="mt-3">
+                    <div class="row border bg-light custom-border">
                         <div class="col py-1 d-flex align-items-center justify-content-center">
                             <h6 class="fw-bold">Project Name</h6>
                             <!-- Add project name content here -->
                         </div>
-                        <div class="col-8 py-2 border-right">
-                            <!-- Display the days of the week -->
-                            <div class="d-flex align-items-center justify-content-center">
+                        <div class="col-8 py-1 border-right">
+                            <!-- Display the days of the week inside the border-->
+                            <div class="d-flex ms-1 align-items-center justify-content-center">
                                 <ng-container *ngFor="let day of daysOfWeek">
-                                    <div class="text-center me-4">
+                                    <div class="text-center mx-2">
                                         <div class="fw-bold">{{ day | date: 'EEE' }}</div>
                                         <div class="fw-bold">{{ day | date: 'd MMM' }}</div>
                                     </div>
@@ -146,25 +146,25 @@
                                 </ng-container>
                             </div>
                         </div>
-                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
-                            <h6 class="fw-bold">Total</h6>
+
+                        <div class="col-2 py-3">
+                            <h6 class="fw-bold">Total Hours</h6>
                             <!-- Total count here -->
                         </div>
                     </div>
 
                     <!-- Section for emp data entry -->
                     <div class="row" *ngFor="let row of rows; let i = index" [id]="'row-' + i">
-                        <div class="col py-2 d-flex align-items-center justify-content-center">
-
-                            <select class="form-select">
+                        <div class="col py-3 d-flex align-items-center justify-content-start">
+                            <select class="form-select w-auto text-center" style="cursor: pointer;">
                                 <option disabled selected hidden>Select Project</option>
-                                <option *ngFor="let project of projects" [value]="project">{{ project }}</option>
+                                <option class="fw-bold" *ngFor="let project of projects" [value]="project">{{ project }}
+                                </option>
                             </select>
-
                         </div>
 
-                        <div class="col-8 py-2 border-right">
-                            <div class="d-flex align-items-center">
+                        <div class="col-7 py-3 border-right ps-0">
+                            <div class="d-flex align-items-center justify-content-start">
                                 <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
                                 <ng-container *ngFor="let weekDay of weekDays; let j = index">
                                     <div class="col">
@@ -176,26 +176,52 @@
                             </div>
                         </div>
 
-                        <div class="col-1 py-2 d-flex flex-column align-items-center justify-content-center">
+                        <!-- for calculating the values in newly created rows  -->
+                        <div class="col-2 py-3 d-flex flex-column align-items-center justify-content-start">
                             <div class="sum-box">
                                 <span class="fw-bold" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours) }}</span>
+                                <i class="mx-4 bi bi-three-dots-vertical text-bold rounded shadow-hover btn btn-outline-secondary btn-sm"
+                                    style="cursor: pointer;" data-bs-toggle="dropdown"></i>
+
+                                <div class="dropdown-menu">
+                                    <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
+                                        <i class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
+                                        <span class="fw-bold small mx-1">Clear</span>
+                                    </button>
+                                    <button type="button" class="dropdown-item" (click)="addRow()">
+                                        <i class="btn btn-primary custom-btn-size bi bi-plus"></i>
+                                        <span class="fw-bold small mx-1">Add Row</span>
+                                    </button>
+                                    <button type="button" class="dropdown-item" *ngIf="i > 0" (click)="deleteRow(i)">
+                                        <i class="btn btn-danger custom-btn-size bi bi-trash"></i>
+                                        <span class="fw-bold small mx-1">Delete</span>
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-12 py-2 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <button type="button" class="btn btn-secondary btn-sm mx-2"
-                                        (click)="clearTextFields(i)">
-                                        <i class="bi bi-arrow-counterclockwise"></i>
-                                    </button>
+                    <!-- The total column summing -->
+                    <div class="mt-2 row border bg-light">
+                        <div class="col py-1 d-flex align-items-center justify-content-center">
+                            <h6 class="fw-bold">Total Hours</h6>
+                        </div>
 
-                                    <button type="button" class="btn btn-primary btn-sm mx-2" (click)="addRow()">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm mx-2" (click)="deleteRow(i)">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
+                        <div class="col-9 py-1 border-right">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <div class="col-1 py-2 mx-2 d-flex flex-column align-items-center justify-content-center"
+                                    *ngFor="let weekDay of weekDays">
+                                    <div class="sum-box">
+                                        <span class="fw-bold">{{ calculateColumnTotal(weekDay) }}</span>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-1 py-2 d-flex flex-column align-items-center justify-content-center ms-auto custom-margin">
+                                    <div class="sum-box">
+                                        <span class="fw-bold">{{ totalSum.toFixed(2) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -203,8 +229,8 @@
                 </div>
             </div>
 
-            <!-- Button Section -->
-            <div class="mt-4 d-flex justify-content-center fs-6">
+            <!-- Main Button Section -->
+            <div class="mt-5 d-flex justify-content-center fs-6">
                 <button type="button" class="btn btn-primary mx-2" (click)="goToDashboard()">BACK</button>
                 <button type="button" class="btn btn-secondary mx-2">SAVE</button>
                 <button type="button" class="btn btn-success mx-2">SUBMIT</button>

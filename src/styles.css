@@ -1,9 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Ubuntu:ital@1&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Ubuntu:ital@1&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Heebo&display=swap');
 @import '~bootstrap/dist/css/bootstrap.css';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 /* here we are adding the global fonts and give the proper family name in body tag*/
 
 body{
-    font-family: 'Josefin Sans', sans-serif !important;
+    /* font-family: Arial, sans-serif !important; */
+    font-family: 'Heebo', sans-serif !important;
 }

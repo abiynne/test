@@ -44,6 +44,35 @@
   align-items: center;
 }
 
+.short-width {
+  width: 270px; /* Adjust the width as per your requirements */
+}
 
+.custom-border {
+  border-right-width: 1px; /* Adjust the width as needed */
+}
+
+.custom-margin {
+  margin-right: 68px; /* Adjust the value as per your preference */
+}
+
+.custom-btn-size {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.shadow-hover {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.shadow-hover:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.custom-btn-size {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
 
 

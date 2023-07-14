@@ -11,6 +11,7 @@ import lottie from 'lottie-web';
   templateUrl: './createtimesheet.component.html',
   styleUrls: ['./createtimesheet.component.css']
 })
+
 export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   selectedDate: NgbDateStruct;
   minDate: NgbDate;
@@ -19,14 +20,17 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   highlightedRangeStart!: NgbDate;
   highlightedRangeEnd!: NgbDate;
   dropdownLabel: string = '';
-  weeks: string[] = []; // for weeks
   isContactCardVisible: boolean = false; // for contact card
   contactCardContent: SafeHtml | null = null; //for contact card content
-  daysOfWeek!: Date[]; // Array to hold days of the week
+  daysOfWeek: Date[] = [];
   weekDays: number[] = [1, 2, 3, 4, 5, 6, 7];
+  weeks: { start: number; end: number }[] = [];
   defaultTotalSum: string = '0.00';
   rows: any[] = []; //for DOM add or remove rows
   @ViewChild('arrowButton', { static: false }) arrowButton!: ElementRef<HTMLButtonElement>;
+  selectedWeek: string;
+  totalSum: number = 0;
+  columnTotalSum: number[] = [];
   // for adding rows based on the dropdown count
   selectedProject: string = '';
   projects: string[] = [
@@ -49,26 +53,15 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.highlightedRangeEnd = {} as NgbDate;
     this.highlightedRangeStart = {} as NgbDate;
     this.generateWeekButtons();
-
+    this.generateWeekDays();
+    this.selectedWeek = '';
   }
 
   ngOnInit() {
-    // const cardContent = `
-    //   <div class="card" style="width: 18rem;">
-    //     <div class="card-header">
-    //       <i class="bi bi-person-circle text-primary" style="font-size: 50px;"></i>
-    //     </div>
-    //     <div class="card-body">
-    //       <h5 class="card-title">Shinto Chandy</h5>
-    //       <p class="card-text">Mobile No.: 1234567890</p>
-    //       <p class="card-text">Work No.: 0987654321</p>
-    //       <p class="card-text">Email: schandy@v2soft.com</p>
-    //     </div>
-    //   </div>
-    // `;
-    // this.contactCardContent = this.sanitizer.bypassSecurityTrustHtml(cardContent);
-    this.daysOfWeek = this.getDaysOfWeek();
+    this.generateWeekButtons();
+    this.generateWeekDays();
     this.addRow(); // Add an initial row when the component initializes
+
   }
 
   ngAfterViewInit() {
@@ -88,6 +81,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       totalSum.text(sum.toFixed(2));
     });
 
+
     // for lottie animations
     const animation = lottie.loadAnimation({
       container: animationContainer,
@@ -97,7 +91,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       autoplay: true
     });
   }
- 
+
   addRow() {
     const dropdownCount = this.projects.length;
     if (this.rows.length < dropdownCount) {
@@ -115,69 +109,124 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   deleteRow(index: number) {
     if (index > 0) {
       this.rows.splice(index, 1); // Remove the row at the specified index
+      this.updateTotalSum(); 
     }
   }
+  
 
   calculateTotalSum() {
     this.rows.forEach((row, rowIndex) => {
       let sum = 0;
       const inputs = $(`#row-${rowIndex} input[type="text"]`);
-  
+
       inputs.each((index, input) => {
         const value = parseFloat($(input).val() as string);
         if (!isNaN(value)) {
           sum += value;
         }
       });
-  
+
       const totalSum = $(`#totalSum-${rowIndex}`);
       totalSum.text(sum.toFixed(2));
+
+      row.total = sum; // Update the total property of the row
+
+      this.updateTotalSum(); // Update the totalSum property
     });
   }
-  
+
+  // for lat column total sum calculation
+  updateTotalSum() {
+    let sum = 0;
+    this.rows.forEach((row) => {
+      sum += row.total || 0;
+    });
+    this.totalSum = sum;
+  }
+
 
   calculateRowTotal(hours: string[]): string {
     let sum = 0;
     for (let i = 0; i < hours.length; i++) {
-        const value = parseFloat(hours[i]);
-        if (!isNaN(value)) {
-            sum += value;
-        }
+      const value = parseFloat(hours[i]);
+      if (!isNaN(value)) {
+        sum += value;
+      }
     }
     return sum.toFixed(2);
-}
+  }
+
+  calculateColumnTotal(weekDay: number): string {
+    let sum = 0;
+    this.rows.forEach((row) => {
+      const value = parseFloat(row.hours[weekDay - 1]);
+      if (!isNaN(value)) {
+        sum += value;
+      }
+    });
+    this.columnTotalSum[weekDay - 1] = sum; // Update the column total sum in the array
+    return sum.toFixed(2);
+  }
+
 
   // for clearing the input that was entered from th text field and from sum  field
   clearTextFields(rowIndex: number) {
-  const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
-  rowInputs.val('');
-
-  const sum = 0;
-  const totalSum = $(`#totalSum-${rowIndex}`);
-  totalSum.text(sum.toFixed(2));
-
-  const selectElement = $(`#row-${rowIndex} select.form-select`);
-  selectElement.prop('selectedIndex', 0);
-}
-
-  // showContactCard() {
-  //   this.isContactCardVisible = true;
-  // }
-
-  // hideContactCard() {
-  //   this.isContactCardVisible = false;
-  // }
-
-  getDaysOfWeek(): Date[] {
-    const startDate = new Date(); // Use the desired start date
+    const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
+    rowInputs.val('');
+  
+    const totalSum = 0;
+    const totalSumElement = $(`#totalSum-${rowIndex}`);
+    totalSumElement.text(totalSum.toFixed(2));
+  
+    const selectElement = $(`#row-${rowIndex} select.form-select`);
+    selectElement.prop('selectedIndex', 0);
+  
+    for (let weekDay = 1; weekDay <= this.weekDays.length; weekDay++) {
+      const columnTotal = this.calculateColumnTotal(weekDay);
+      const columnTotalElement = $(`#totalSum-${weekDay}`);
+      columnTotalElement.text(columnTotal);
+    }
+  
+    this.calculateTotalSum(); // Recalculate the total sum
+  }
+  
+  generateWeekDays() {
+    const startDate = this.getDaysOfWeek(this.selectedDate);
+    const startDay = startDate.getDate();
+    const endDay = startDay + 6;
     const daysOfWeek: Date[] = [];
 
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+    for (let i = startDay; i <= endDay; i++) {
+      const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
       daysOfWeek.push(date);
     }
 
-    return daysOfWeek;
+    this.daysOfWeek = daysOfWeek;
+  }
+
+  getDaysOfWeek(date: NgbDateStruct): Date {
+    const weekStartDay = 1; // Assuming week starts on Monday
+    const selectedDate = new Date(date.year, date.month - 1, date.day);
+    const selectedDay = selectedDate.getDay();
+
+    const diff = selectedDay >= weekStartDay ? selectedDay - weekStartDay : 7 - (weekStartDay - selectedDay);
+    const weekStartDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() - diff);
+
+    return weekStartDate;
+  }
+
+  showDays(week: { start: number, end: number }) {
+    const startDate = this.getDaysOfWeek(this.selectedDate);
+    const startDay = week.start;
+    const endDay = week.end;
+    const daysOfWeek: Date[] = [];
+
+    for (let i = startDay; i <= endDay; i++) {
+      const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
+      daysOfWeek.push(date);
+    }
+
+    this.daysOfWeek = daysOfWeek;
   }
 
   prevMonth() {
@@ -265,7 +314,20 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   }
 
   selectFirstHalf() {
+    // Set the showFirstHalf variable to true
     this.showFirstHalf = true;
+
+    // Update the highlighted range
+    this.updateHighlightedRange();
+  }
+
+  updateHighlightedRange() {
+    // Get the start and end dates of the highlighted range
+    const startOfMonth = NgbDate.from({ year: this.selectedDate.year, month: this.selectedDate.month, day: 1 }) as NgbDate;
+    const lastDayOfMonth = new Date(this.selectedDate.year, this.selectedDate.month, 0).getDate();
+    const highlightedRangeEndDay = this.showFirstHalf ? 15 : lastDayOfMonth;
+    this.highlightedRangeStart = startOfMonth;
+    this.highlightedRangeEnd = NgbDate.from({ year: this.selectedDate.year, month: this.selectedDate.month, day: highlightedRangeEndDay }) as NgbDate;
   }
 
   selectSecondHalf() {
@@ -277,14 +339,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return this.showFirstHalf ? day <= 15 : day > 15;
   }
 
-  updateHighlightedRange() {
-    const startOfMonth = NgbDate.from({ year: this.selectedDate.year, month: this.selectedDate.month, day: 1 }) as NgbDate;
-    const lastDayOfMonth = new Date(this.selectedDate.year, this.selectedDate.month, 0).getDate();
-    const highlightedRangeEndDay = this.showFirstHalf ? 15 : lastDayOfMonth;
-    this.highlightedRangeStart = startOfMonth;
-    this.highlightedRangeEnd = NgbDate.from({ year: this.selectedDate.year, month: this.selectedDate.month, day: highlightedRangeEndDay }) as NgbDate;
-  }
-
   isHighlighted(date: NgbDate): boolean {
     const day = date.day;
     const currentMonth = date.month;
@@ -294,28 +348,22 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   // for week buttons on right side
   generateWeekButtons() {
-    const currentMonth = this.selectedDate.month - 1;
-    const currentYear = this.selectedDate.year;
+    const startDate = this.getDaysOfWeek(this.selectedDate);
+    const weeks: { start: number; end: number; month: string }[] = [];
 
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+    const lastDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
+    let weekStart = 1;
+    let weekEnd = 7;
 
-    const firstWeekStartDate = 1;
-    const lastWeekEndDate = lastDayOfMonth.getDate();
-    let weekStart = firstWeekStartDate;
-    let weekEnd = Math.min(firstWeekStartDate + 6, lastWeekEndDate);
-
-    this.weeks = [];
-
-    while (weekStart <= lastWeekEndDate) {
-      const startMonth = this.getMonthName(currentMonth + 1).substr(0, 3);
-      const endMonth = this.getMonthName(currentMonth + 1).substr(0, 3);
-      const weekRange = `${weekStart} ${startMonth} to ${weekEnd} ${endMonth}`;
-      this.weeks.push(weekRange);
+    while (weekStart <= lastDayOfMonth) {
+      const monthName = this.getMonthName(startDate.getMonth() + 1);
+      weeks.push({ start: weekStart, end: weekEnd, month: monthName });
 
       weekStart = weekEnd + 1;
-      weekEnd = Math.min(weekStart + 6, lastWeekEndDate);
+      weekEnd = Math.min(weekStart + 6, lastDayOfMonth);
     }
+
+    this.weeks = weeks;
   }
 
   goToDashboard() {
