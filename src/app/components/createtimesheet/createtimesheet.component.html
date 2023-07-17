@@ -1,36 +1,46 @@
-<div class="container">
-    <h2>Create Time Sheet</h2>
-    <div class="row border p-4 mt-4">
-        <div class="col-md-3">
-            <div class="border p-4 short-width" style="margin-left: -16px;">
+<div class="container-fluid">
+    <h3 class="fw-bold mt-4">Create Time Sheet</h3>
+    <div class="row mt-4">
+        <div class="col-md-3 border-right">
+            <div class="border p-4">
                 <!-- drop down on top section -->
                 <div class="dropdown mb-4 text-center align-items-center">
                     <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-calendar2-week mr-2"></i>
+                        <!-- <span #dropdownLabelContainer class="animation-container"></span> -->
                         <span class="ms-1 small">{{ getDropdownLabel() }}</span>
                     </button>
 
-                    <ul class="dropdown-menu w-100 align-items-center">
-                        <li><a class="dropdown-item" (click)="selectFirstHalf()">01-{{ getCurrentMonthName().substr(0,
-                                3) }}-{{ selectedDate.year }} to 15-{{ getCurrentMonthName().substr(0, 3) }}-{{
-                                selectedDate.year }}</a></li>
-                        <li><a class="dropdown-item" (click)="selectSecondHalf()">16-{{ getCurrentMonthName().substr(0,
-                                3) }}-{{ selectedDate.year }} to {{ getLastDayOfMonth() }}-{{
-                                getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}</a></li>
+                    <ul class="dropdown-menu w-100 align-items-center custom-dropdown-menu" style="cursor: pointer;">
+                        <li>
+                            <a class="dropdown-item" (click)="selectFirstHalf()"
+                                [ngClass]="{ 'active': isFirstHalfSelected() }">
+                                01-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }} to 15-{{
+                                getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="selectSecondHalf()"
+                                [ngClass]="{ 'active': !isFirstHalfSelected() }">
+                                16-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }} to {{
+                                getLastDayOfMonth() }}-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Date picker section -->
                 <div class="text-center">
-                    <div class="align-items-center justify-content-center">
+                    <div class="align-items-center justify-content-center w-auto">
                         <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
                             [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
                             class="custom-datepicker" (ngModelChange)="generateWeekButtons()">
                             <ng-template #customDay let-date="date" let-currentMonth="currentMonth"
                                 let-selected="selected" let-disabled="disabled" let-focused="focused">
                                 <div class="custom-day" [class.current-month]="currentMonth" [class.selected]="selected"
-                                    [class.highlighted]="isHighlighted(date)">
+                                    [class.highlighted]="isHighlighted(date)"
+                                    [class.text-primary]="isCurrentDate(date)">
                                     {{ date.day }}
                                 </div>
                             </ng-template>
@@ -83,21 +93,21 @@
 
         <!-- right side section -->
         <div class="col-md-9">
-            <div class="border p-4 border-right-4" style="margin-left: -40px;">
+            <div class="border p-4">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
                             <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
-                        </div>
+                        </div> 
 
                         <div class="mb-0" style="padding-left: 5px">
-                            <span class="contact-name" [ngbPopover]="contactCardContent" [placement]="'bottom'"
-                                triggers="mouseenter">Shinto Chandy</span>
+                            <span class="contact-name fw-bold" [ngbPopover]="contactCardContent" [placement]="'bottom'"
+                                triggers="mouseenter" style="cursor: pointer;">Shinto Chandy</span>
                         </div>
 
                         <!-- for displaying the contact card contents  -->
                         <ng-template #contactCardContent>
-                            <div class="card" style="width: 16rem;">
+                            <div class="card" style="width: 15rem;">
                                 <div class="card-header bg-primary text-white">
                                     <i class="bi bi-person-circle" style="font-size: 50px;"></i>
                                 </div>
@@ -120,7 +130,7 @@
                         </ng-template>
                     </div>
                     <div class="d-flex flex-wrap">
-                        <button *ngFor="let week of weeks" class="btn btn-outline-dark btn-sm m-2 rounded   "
+                        <button *ngFor="let week of weeks" class="btn btn-outline-primary btn-sm m-2 rounded fw-bold"
                             (click)="showDays(week)">
                             {{ week.start }} {{ getCurrentMonthName() | slice:0:3 }} to {{ week.end }} {{
                             getCurrentMonthName() | slice:0:3 }}
@@ -134,6 +144,7 @@
                             <h6 class="fw-bold">Project Name</h6>
                             <!-- Add project name content here -->
                         </div>
+
                         <div class="col-8 py-1 border-right">
                             <!-- Display the days of the week inside the border-->
                             <div class="d-flex ms-1 align-items-center justify-content-end">
@@ -156,21 +167,23 @@
                     <!-- Section for emp data entry -->
                     <div class="row" *ngFor="let row of rows; let i = index" [id]="'row-' + i">
                         <div class="col py-3 d-flex align-items-center justify-content-start">
-                            <select class="form-select w-auto text-center" style="cursor: pointer;">
+                            <select class="form-select w-auto text-center" style="cursor: pointer; width: 50px;">
                                 <option disabled selected hidden>Select Project</option>
                                 <option class="fw-bold" *ngFor="let project of projects" [value]="project">{{ project }}
                                 </option>
                             </select>
                         </div>
 
-                        <div class="col-7 py-3 border-right ps-0">
-                            <div class="d-flex align-items-center justify-content-start">
+                        <div class="col-7 py-3 ps-0">
+                            <div class="d-flex align-items-center justify-content-center">
                                 <!-- ngFor directive to generate the input fields dynamically instead of repeating the code multiple times -->
                                 <ng-container *ngFor="let weekDay of weekDays; let j = index">
+                                    <!-- put "daysOfWeek" for removing last button columns -->
                                     <div class="col">
-                                        <input type="text" class="form-control mx-1" style="width: 70px;"
+                                        <input type="text" class="form-control mx-1" style="width: 60px;"
                                             pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
-                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="3" />
+                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="3"
+                                            [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" />
                                     </div>
                                 </ng-container>
                             </div>
@@ -234,12 +247,12 @@
             </div>
 
             <!-- Main Button Section -->
-            <div class="mt-5 d-flex justify-content-center fs-6">
-                <button type="button" class="btn btn-primary mx-2" (click)="goToDashboard()">BACK</button>
-                <button type="button" class="btn btn-secondary mx-2">SAVE</button>
-                <button type="button" class="btn btn-success mx-2">SUBMIT</button>
-                <button #arrowButton class="btn btn-danger mx-2 custom-btn">
-                    NEXT
+            <div class="mt-4 d-flex justify-content-center fs-2">
+                <button type="button" class="btn btn-primary" (click)="goToDashboard()">Back</button>
+                <button type="button" class="btn btn-secondary mx-1">Save</button>
+                <button type="button" class="btn btn-success mx-1">Submit</button>
+                <button #arrowButton class="btn btn-danger mx-1 custom-btn">
+                    Next
                     <span class="animation-container"></span>
                 </button>
             </div>

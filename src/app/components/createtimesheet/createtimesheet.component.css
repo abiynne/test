@@ -28,6 +28,13 @@
   display: block;
 }
 
+.custom-day.current-date {
+  background-color: #f8f9fa; /* Set your desired color for the current date */
+  color: #000000; /* Set the text color for the current date */
+  font-weight: bold; /* Optionally, set the font weight for the current date */
+}
+
+
 .custom-btn {
   height: 40px;
   width: 100px;
@@ -74,5 +81,11 @@
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
 }
+
+.custom-dropdown-menu .dropdown-item.active {
+  background-color: #61affe;
+  color: white;
+}
+
 
 

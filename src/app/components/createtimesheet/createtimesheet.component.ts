@@ -29,6 +29,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   defaultTotalSum: string = '0.00';
   rows: any[] = []; //for DOM add or remove rows
   @ViewChild('arrowButton', { static: false }) arrowButton!: ElementRef<HTMLButtonElement>;
+  // @ViewChild('dropdownLabelContainer', { static: false }) dropdownLabelContainer!: ElementRef<HTMLSpanElement>;
+
   selectedWeek: string;
   totalSum: number = 0;
   columnTotalSum: number[] = [];
@@ -59,10 +61,19 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.generateWeekButtons();
     this.generateWeekDays();
     this.addRow(); // Add an initial row when the component initializes
+    this.generateWeekButtons();
 
+    // Get the current date
+    const currentDate = this.selectedDate.day; 
+
+    // Find the week range that includes the current date
+    const currentWeek = this.weeks.find(week => week.start <= currentDate && week.end >= currentDate);
+
+    if (currentWeek) {
+      this.showDays(currentWeek); // Display the days for the current week range
+    }
   }
 
   ngAfterViewInit() {
@@ -91,6 +102,24 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       loop: true,
       autoplay: true
     });
+
+    // // for calendar animation
+    // const dropdownLabelAnimation = lottie.loadAnimation({
+    //   container: this.dropdownLabelContainer.nativeElement,
+    //   path: 'assets/lottie/calendar-loading.json', // Replace with the path to your dropdown label animation JSON file
+    //   renderer: 'svg',
+    //   loop: true,
+    //   autoplay: true
+    // });
+  }
+
+  isCurrentDate(date: NgbDate): boolean {
+    const currentDate = new Date();
+    return (
+      date.year === currentDate.getFullYear() &&
+      date.month === currentDate.getMonth() + 1 &&
+      date.day === currentDate.getDate()
+    );
   }
 
   addRow() {
@@ -169,7 +198,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return sum.toFixed(2);
   }
 
-
   // for clearing the input that was entered from th text field and from sum  field
   clearTextFields(rowIndex: number) {
     const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
@@ -235,6 +263,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
     this.daysOfWeek = daysOfWeek;
   }
+
 
   prevMonth() {
     this.selectedDate = this.calendar.getPrev(this.selectedDate as NgbDate, 'm', 1);
@@ -305,20 +334,21 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   // for drop down support
   getDropdownLabel(): string {
-    const startDay = 1;
-    const lastDayOfMonth = new Date(this.selectedDate.year, this.selectedDate.month, 0).getDate();
-    const monthName = this.getMonthName(this.selectedDate.month);
+  const currentDay = this.selectedDate.day;
+  const currentMonth = this.selectedDate.month;
+  const currentYear = this.selectedDate.year;
 
-    if (this.showFirstHalf) {
-      const startDate = '01';
-      const endDate = '15';
-      return `${startDate}-${monthName.substr(0, 3)}-${this.selectedDate.year} to ${endDate}-${monthName.substr(0, 3)}-${this.selectedDate.year}`;
-    } else {
-      const startDate = '16';
-      const endDate = lastDayOfMonth.toString().padStart(2, '0');
-      return `${startDate}-${monthName.substr(0, 3)}-${this.selectedDate.year} to ${endDate}-${monthName.substr(0, 3)}-${this.selectedDate.year}`;
-    }
+  const startDate = 1;
+  const endDate = 15;
+
+  if (currentDay >= startDate && currentDay <= endDate && currentMonth === this.selectedDate.month) {
+    return `${startDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${endDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
+  } else {
+    const lastDayOfMonth = this.getLastDayOfMonth();
+    return `16-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${lastDayOfMonth}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
   }
+}
+
 
   selectFirstHalf() {
     // Set the showFirstHalf variable to true
@@ -348,10 +378,23 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   isHighlighted(date: NgbDate): boolean {
     const day = date.day;
-    const currentMonth = date.month;
-    const isFirstHalf = day >= 1 && day <= 15;
-    return isFirstHalf && currentMonth === this.selectedDate.month;
+    const month = date.month;
+    const year = date.year;
+  
+    if (this.showFirstHalf) {
+      const startDate = 1;
+      const endDate = 15;
+      return day >= startDate && day <= +endDate && month === this.selectedDate.month && year === this.selectedDate.year;
+    } else {
+      const startDate = 16;
+      const endDate = +this.getLastDayOfMonth();
+      return day >= startDate && day <= endDate && month === this.selectedDate.month && year === this.selectedDate.year;
+    }
   }
+  
+  isFirstHalfSelected(): boolean {
+    return this.showFirstHalf;
+  }  
 
   // for week buttons on right side
   generateWeekButtons() {
@@ -373,6 +416,12 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.weeks = weeks;
   }
 
+  // for text box validation
+  isValidInput(value: string): boolean {
+    const numericValue = Number(value);
+    return value === '' || (!isNaN(numericValue) && Number.isInteger(numericValue));
+  }
+  
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }

@@ -6,7 +6,7 @@
 
 /* here we are adding the global fonts and give the proper family name in body tag*/
 
-body{
+body {
     /* font-family: Arial, sans-serif !important; */
-    font-family: 'Heebo', sans-serif !important;
+    /* font-family: 'Heebo', sans-serif !important; */
 }
