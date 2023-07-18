@@ -5,7 +5,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import lottie from 'lottie-web';
-import { WeekDay } from '@angular/common';
 
 @Component({
   selector: 'app-createtimesheet',
@@ -25,12 +24,13 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   contactCardContent: SafeHtml | null = null; //for contact card content
   daysOfWeek: Date[] = [];
   weekDays: number[] = [1, 2, 3, 4, 5, 6, 7];
-  weeks: { start: number; end: number }[] = [];
+  weeks: { start: number; end: number, month: string }[] = [];
   defaultTotalSum: string = '0.00';
   rows: any[] = []; //for DOM add or remove rows
   @ViewChild('arrowButton', { static: false }) arrowButton!: ElementRef<HTMLButtonElement>;
   // @ViewChild('dropdownLabelContainer', { static: false }) dropdownLabelContainer!: ElementRef<HTMLSpanElement>;
 
+  isLeftSectionVisible: boolean = false;
   selectedWeek: string;
   totalSum: number = 0;
   columnTotalSum: number[] = [];
@@ -55,7 +55,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateHighlightedRange();
     this.highlightedRangeEnd = {} as NgbDate;
     this.highlightedRangeStart = {} as NgbDate;
-    this.generateWeekButtons();
     this.generateWeekDays();
     this.selectedWeek = '';
   }
@@ -111,6 +110,10 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     //   loop: true,
     //   autoplay: true
     // });
+  }
+
+  toggleLeftSection() {
+    this.isLeftSectionVisible = !this.isLeftSectionVisible;
   }
 
   isCurrentDate(date: NgbDate): boolean {
@@ -255,21 +258,21 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     const startDay = week.start;
     const endDay = week.end;
     const daysOfWeek: Date[] = [];
-
+  
     for (let i = startDay; i <= endDay; i++) {
       const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
       daysOfWeek.push(date);
     }
-
+  
     this.daysOfWeek = daysOfWeek;
   }
-
-
+  
   prevMonth() {
     this.selectedDate = this.calendar.getPrev(this.selectedDate as NgbDate, 'm', 1);
     this.updateMinMaxDates();
     this.updateHighlightedRange();
     this.updateDropdownLabel();
+    this.generateWeekButtons();
   }
 
   nextMonth() {
@@ -277,6 +280,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateMinMaxDates();
     this.updateHighlightedRange();
     this.updateDropdownLabel();
+    this.generateWeekButtons();
   }
 
   isDayActive(date: NgbDate): boolean {
@@ -400,22 +404,35 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   generateWeekButtons() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
     const weeks: { start: number; end: number; month: string }[] = [];
-
-    const lastDayOfMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
-    let weekStart = 1;
-    let weekEnd = 7;
-
-    while (weekStart <= lastDayOfMonth) {
-      const monthName = this.getMonthName(startDate.getMonth() + 1);
+    const currentDate = new Date();
+  
+    let currentDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+    currentDay.setDate(currentDay.getDate() - currentDay.getDay() + 1); // Start from the first day of the week
+  
+    while (weeks.length < 6 && currentDay.getMonth() === startDate.getMonth()) {
+      const weekStart = currentDay.getDate();
+      currentDay.setDate(currentDay.getDate() + 6); // Set to the last day of the week
+      const weekEnd = currentDay.getDate();
+      const monthName = this.getMonthName(currentDay.getMonth() + 1);
       weeks.push({ start: weekStart, end: weekEnd, month: monthName });
-
-      weekStart = weekEnd + 1;
-      weekEnd = Math.min(weekStart + 6, lastDayOfMonth);
+      currentDay.setDate(currentDay.getDate() + 1); // Move to the next day
     }
-
+    
     this.weeks = weeks;
+  
+    const currentWeek = weeks.find(
+      (week) =>
+        week.start <= currentDate.getDate() &&
+        week.end >= currentDate.getDate() &&
+        week.month === this.getCurrentMonthName().substr(0, 3)
+    );
+  
+    if (currentWeek) {
+      this.showDays(currentWeek);
+    }
   }
-
+  
+  
   // for text box validation
   isValidInput(value: string): boolean {
     const numericValue = Number(value);

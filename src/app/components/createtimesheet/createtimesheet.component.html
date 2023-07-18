@@ -1,9 +1,18 @@
 <div class="container-fluid">
-    <h3 class="fw-bold mt-4">Create Time Sheet</h3>
-    <div class="row mt-4">
-        <div class="col-md-3 border-right">
-            <div class="border p-4">
-                <!-- drop down on top section -->
+    <h3 class="fw-bold mt-2">Create Time Sheet</h3>
+    <div class="row mt-2">
+
+        <!-- collapse section -->
+        <div class="d-flex justify-content-start mb-3">
+            <button class="btn btn-success" type="button" (click)="toggleLeftSection()">
+                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i>
+            </button>
+        </div>
+
+        <!-- Left section -->
+        <div class="col-md-3 border-right" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
+            <div [class.slide-out-left]="!isLeftSectionVisible" [class.slide-in-left]="isLeftSectionVisible"
+                class="border p-4 transition-left">
                 <div class="dropdown mb-4 text-center align-items-center">
                     <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,13 +101,13 @@
         </div>
 
         <!-- right side section -->
-        <div class="col-md-9">
-            <div class="border p-4">
+        <div class="col-md-9" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
+            <div class="border p-4 right-section">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
                             <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
-                        </div> 
+                        </div>
 
                         <div class="mb-0" style="padding-left: 5px">
                             <span class="contact-name fw-bold" [ngbPopover]="contactCardContent" [placement]="'bottom'"
@@ -132,14 +141,14 @@
                     <div class="d-flex flex-wrap">
                         <button *ngFor="let week of weeks" class="btn btn-outline-primary btn-sm m-2 rounded fw-bold"
                             (click)="showDays(week)">
-                            {{ week.start }} {{ getCurrentMonthName() | slice:0:3 }} to {{ week.end }} {{
-                            getCurrentMonthName() | slice:0:3 }}
+                            {{ week.start }} {{ week.month | slice:0:3 }} to {{ week.end }} {{ week.month | slice:0:3 }}
                         </button>
                     </div>
+
                 </div>
 
                 <div class="mt-3">
-                    <div class="row border bg-light custom-border">
+                    <div class="row border custom-border" style="background-color: #80cbc4">
                         <div class="col py-1 d-flex align-items-center justify-content-center">
                             <h6 class="fw-bold">Project Name</h6>
                             <!-- Add project name content here -->
@@ -261,7 +270,9 @@
 </div>
 
 <!-- Copyright -->
-<div class="text-center text-dark p-3">
-    © 2023 Copyright :
-    <a class="text-dark" href="https://www.v2soft.com/">V2Soft.com</a>
-</div>
+<footer class="fixed-bottom bg-light">
+    <div class="text-center text-dark p-3">
+        © 2023 Copyright :
+        <a class="text-dark" href="https://www.v2soft.com/">V2Soft.com</a>
+    </div>
+</footer>
