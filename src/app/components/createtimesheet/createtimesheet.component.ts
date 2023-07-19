@@ -146,7 +146,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   calculateTotalSum() {
     this.rows.forEach((row, rowIndex) => {
       let sum = 0;
@@ -253,7 +252,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return weekStartDate;
   }
 
-  showDays(week: { start: number, end: number }) {
+  showDays(week: { start: number, end: number, month:string }) {
     const startDate = this.getDaysOfWeek(this.selectedDate);
     const startDay = week.start;
     const endDay = week.end;
@@ -315,6 +314,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     ];
     return monthNames[month - 1];
   }
+  
 
   updateMinMaxDates() {
     const startOfYear = NgbDate.from({ year: 2020, month: 1, day: 1 }) as NgbDate; // Update start year
