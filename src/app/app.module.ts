@@ -16,6 +16,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LoginpageComponent } from './components/loginpage/loginpage.component';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 
 
@@ -27,7 +28,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     LastTimesheetComponent,
     LastSubmittedTimesheetComponent,
     MyTimesheetsComponent,
-    LoginpageComponent
+    LoginpageComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,
