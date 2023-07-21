@@ -1,0 +1,92 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "username": "john_doe",
+        "password": "hashed_password1",
+        "name": "John Doe",
+        "mobileno": "1234567890",
+        "workno": "9876543210",
+        "email": "john@example.com"
+      },
+      {
+        "id": 2,
+        "username": "jane_smith",
+        "password": "hashed_password2",
+        "name": "Jane Smith",
+        "mobileno": "9876543210",
+        "workno": "1234567890",
+        "email": "jane@example.com"
+      }
+
+    ],
+  
+    "projects": [
+      {
+        "id": 1,
+        "name": "Project A"
+      },
+      {
+        "id": 2,
+        "name": "Project B"
+      }
+
+    ],
+  
+    "user_projects": [
+      {
+        "id": 1,
+        "user_id": 1,
+        "project_id": 1
+      },
+      {
+        "id": 2,
+        "user_id": 2,
+        "project_id": 1
+      }
+
+    ],
+  
+    "timesheet_data": [
+      {
+        "id": 1,
+        "project_id": 1,
+        "user_id": 1,
+        "hours_1": 5,
+        "hours_2": 6,
+        "hours_3": 7,
+        "hours_4": 8,
+        "hours_5": 4,
+        "hours_6": 0,
+        "hours_7": 0
+      },
+      {
+        "id": 2,
+        "project_id": 1,
+        "user_id": 2,
+        "hours_1": 6,
+        "hours_2": 7,
+        "hours_3": 8,
+        "hours_4": 4,
+        "hours_5": 5,
+        "hours_6": 2,
+        "hours_7": 0
+      }
+
+    ],
+  
+    "holidays": [
+      {
+        "id": 1,
+        "date": "2023-07-19",
+        "description": "National Holiday"
+      },
+      {
+        "id": 2,
+        "date": "2023-12-25",
+        "description": "Christmas Day"
+      }
+
+    ]
+  }
+  

@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Heebo&display=swap');
 @import '~bootstrap/dist/css/bootstrap.css';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
 
 /* here we are adding the global fonts and give the proper family name in body tag*/
 

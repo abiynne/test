@@ -1,1 +1,274 @@
-<p>last-timesheet works!</p>
+<div class="container-fluid">
+    <h3 class="fw-bold mt-2">View Last Time Sheet</h3>
+    <div class="row mt-2">
+
+        <!-- collapse section -->
+        <div class="d-flex justify-content-start mb-3">
+            <button class="btn btn-success btn-sm" type="button" (click)="toggleLeftSection()">
+                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i>
+            </button>
+        </div>
+
+        <!-- Left section -->
+        <div class="col-md-3 border-right" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
+            <div [class.slide-out-left]="!isLeftSectionVisible" [class.slide-in-left]="isLeftSectionVisible"
+                class="border p-4 transition-left">
+                <div class="dropdown mb-4 text-center align-items-center">
+                    <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-calendar2-week mr-2"></i>
+                        <!-- <span #dropdownLabelContainer class="animation-container"></span> -->
+                        <span class="ms-1 small">{{ getDropdownLabel() }}</span>
+                    </button>
+
+                    <ul class="dropdown-menu w-100 align-items-center custom-dropdown-menu" style="cursor: pointer;">
+                        <li>
+                            <a class="dropdown-item" (click)="selectFirstHalf()"
+                                [ngClass]="{ 'active': isFirstHalfSelected() }">
+                                01-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }} to 15-{{
+                                getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="selectSecondHalf()"
+                                [ngClass]="{ 'active': !isFirstHalfSelected() }">
+                                16-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }} to {{
+                                getLastDayOfMonth() }}-{{ getCurrentMonthName().substr(0, 3) }}-{{ selectedDate.year }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Date picker section -->
+                <div class="text-center">
+                    <div class="align-items-center justify-content-center w-auto">
+                        <ngb-datepicker [displayMonths]="1" [minDate]="minDate" [maxDate]="maxDate"
+                            [outsideDays]="'visible'" [showWeekNumbers]="false" [(ngModel)]="selectedDate"
+                            class="custom-datepicker" (ngModelChange)="generateWeekButtons()">
+                            <ng-template #customDay let-date="date" let-currentMonth="currentMonth"
+                                let-selected="selected" let-disabled="disabled" let-focused="focused">
+                                <div class="custom-day" [class.current-month]="currentMonth" [class.selected]="selected"
+                                    [class.highlighted]="isHighlighted(date)"
+                                    [class.text-primary]="isCurrentDate(date)">
+                                    {{ date.day }}
+                                </div>
+                            </ng-template>
+                        </ngb-datepicker>
+                    </div>
+                </div>
+
+                <!-- comment section -->
+                <div class="form-group"><br>
+                    <label for="comment">Comments</label>
+                    <textarea class="form-control" id="comment" rows="5"></textarea>
+                </div>
+
+                <!-- Legend section -->
+                <div class="border p-4 mt-4 custom-legend">
+                    <h5>Legend:</h5>
+
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-success d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Active Cells</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-secondary d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Inactive Cells</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="legend-color bg-warning d-inline-block mr-2"
+                            style="width: 20px; height: 20px;"></span>
+                        <span style="padding-left:5px">Holidays</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="btn btn-primary btn-sm mr-2 d-flex align-items-center justify-content-center"
+                            style="width: 20px; height: 20px;">
+                            <i class="bi bi-plus"></i>
+                        </span>
+                        <span style="padding-left:5px">Add</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <span class="btn btn-danger btn-sm mr-2 d-flex align-items-center justify-content-center"
+                            style="width: 20px; height: 20px;">
+                            <i class="bi bi-trash"></i>
+                        </span>
+                        <span style="padding-left:5px">Delete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- right side section -->
+        <div class="col-md-9" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
+            <div class="border p-4 right-section">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            <i class="bi bi-person-circle text-primary" style="font-size: 23px;"></i>
+                        </div>
+
+                        <div class="mb-0" style="padding-left: 5px">
+                            <span class="contact-name text-primary fw-bold" [ngbPopover]="contactCardContent"
+                                [placement]="'bottom'" triggers="mouseenter" style="cursor: pointer;">Shinto
+                                Chandy</span>
+                        </div>
+
+                        <!-- for displaying the contact card contents  -->
+                        <ng-template #contactCardContent>
+                            <div class="card" style="width: 15rem;">
+                                <div class="card-header bg-primary text-white">
+                                    <i class="bi bi-person-circle" style="font-size: 50px;"></i>
+                                </div>
+                                <div class="card-body pr-4">
+                                    <h5 class="card-title mb-4 fw-bold">Shinto Chandy</h5>
+                                    <div class="mb-3">
+                                        <i class="bi bi-phone-fill text-primary"></i>
+                                        <span class="ms-2">Mobile No: 1234567890</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <i class="bi bi-telephone-fill text-primary"></i>
+                                        <span class="ms-2">Work No: 0987654321</span>
+                                    </div>
+                                    <div>
+                                        <i class="bi bi-envelope-fill text-primary"></i>
+                                        <span class="ms-2">Email: schandy@v2soft.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <!-- <div class="d-flex flex-wrap">
+                        <button *ngFor="let week of weeks; let i = index" class="btn btn-outline-primary btn-sm m-2 rounded fw-bold"
+                            (click)="showDays(week)">
+                            {{ week.start }} {{ week.month | slice:0:3 }} to {{ week.end }} {{ week.month | slice:0:3 }}
+                        </button>
+                    </div> -->
+                </div>
+
+                <!-- Time Sheet Table -->
+
+                <div class="container table-responsive">
+                    <table class="table border w-100">
+                        <thead>
+                            <tr style="width: 20px;">
+                                <!-- Heading Row -->
+                                <th class=" col py-3 align-items-center justify-content-start text-center"
+                                    style="background-color: #80cbc4">
+                                    <div class="time-sheet-box">
+                                        <h6 class="fw-bold small text-sm">Project Name</h6>
+                                    </div>
+                                </th>
+
+                                <!-- Days of the Week section -->
+                                <ng-container *ngFor="let day of daysOfWeek">
+                                    <th scope="col py-3" class="col py-2 border-right"
+                                        style="background-color: #80cbc4">
+                                        <div class="text-center mx-2 small text-sm">
+                                            <div class="fw-bold">{{ day | date: 'EEE' }}</div>
+                                            <div class="fw-bold">{{ day | date: 'd MMM' }}</div>
+                                        </div>
+                                    </th>
+                                </ng-container>
+
+                                <!-- Total Hours section -->
+                                <th scope="col" class="col py-3 align-items-center justify-content-start"
+                                    style="background-color: #80cbc4">
+                                    <div class="time-sheet-box small text-sm">
+                                        <span class="time-sheet-label fw-bold">Total Hours</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Data Rows -->
+                            <tr *ngFor="let row of rows; let i = index" [id]="'row-' + i">
+                                <td class="col py-2 align-items-center justify-content-start text-center border-0">
+                                    <span class="text-center small text-sm">{{ row.projectName ? row.projectName :
+                                        'Project Name' }}</span>
+                                </td>
+
+                                <ng-container *ngFor="let weekDay of weekDays; let j = index">
+                                    <td class="col py-2 border-right border-0">
+                                        <span class="text-center d-inline-block px-1" style="width: 60px;">
+                                            {{ row.hours[j] ? row.hours[j] : '0.00' }}
+                                        </span>
+                                    </td>
+                                </ng-container>
+
+                                <td class="col d-flex border-0">
+                                    <div class="sum-box">
+                                        <span class="fw-bold small" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours)
+                                            }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody class="mb-3">
+
+                            <tr class="border">
+                                <td class="col py-2 align-items-center justify-content-start border-0 bg-light">
+                                    <div class="col py-1 d-flex align-items-center justify-content-center">
+                                        <h6 class="fw-bold small">Total Hours</h6>
+                                    </div>
+                                </td>
+
+                                <ng-container *ngFor="let weekDay of weekDays">
+                                    <td class="col py-2 border-right border-0 text-center bg-light">
+                                        <div class="sum-box ">
+                                            <span class="fw-bold small">{{ calculateColumnTotal(weekDay) }}</span>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <td class="col py-2 d-flex border-0 text-center bg-light">
+                                    <div class="sum-box">
+                                        <span class="fw-bold small">{{ totalSum.toFixed(2) }}</span>
+                                    </div>
+                                </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- for showing the pop up -->
+            <div class="modal" tabindex="-1" [ngClass]="{'d-block': isModalVisible}" (click)="hideModal()">
+                <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold">Request Status</h5>
+                            <button type="button" class="btn-close" aria-label="Close" (click)="hideModal()">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                            </div>
+                            <p class="text-center my-3">Your edit request has been sent.</p>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary" (click)="hideModal()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Button Section -->
+            <div class="mt-4 d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary mx-1" (click)="showModal()">Request to Edit</button>
+
+                <button type="button" class="btn btn-danger mx-1" (click)="goToDashboard()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Copyright -->
+<footer class="fixed-bottom bg-light">
+    <div class="text-center text-dark p-3">
+        © 2023 Copyright :
+        <a class="text-dark" href="https://www.v2soft.com/">V2Soft.com</a>
+    </div>
+</footer>

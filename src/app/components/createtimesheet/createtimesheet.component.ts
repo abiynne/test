@@ -34,6 +34,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   selectedWeek: string;
   totalSum: number = 0;
   columnTotalSum: number[] = [];
+  isModalVisible = false;
   // for adding rows based on the dropdown count
   selectedProject: string = '';
   projects: string[] = [
@@ -65,7 +66,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.generateWeekButtons();
 
     // Get the current date
-    const currentDate = this.selectedDate.day; 
+    const currentDate = this.selectedDate.day;
 
     // Find the week range that includes the current date
     const currentWeek = this.weeks.find(week => week.start <= currentDate && week.end >= currentDate);
@@ -73,6 +74,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     if (currentWeek) {
       this.showDays(currentWeek); // Display the days for the current week range
     }
+
   }
 
   ngAfterViewInit() {
@@ -252,20 +254,20 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return weekStartDate;
   }
 
-  showDays(week: { start: number, end: number, month:string }) {
+  showDays(week: { start: number, end: number, month: string }) {
     const startDate = this.getDaysOfWeek(this.selectedDate);
     const startDay = week.start;
     const endDay = week.end;
     const daysOfWeek: Date[] = [];
-  
+
     for (let i = startDay; i <= endDay; i++) {
       const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
       daysOfWeek.push(date);
     }
-  
+
     this.daysOfWeek = daysOfWeek;
   }
-  
+
   prevMonth() {
     this.selectedDate = this.calendar.getPrev(this.selectedDate as NgbDate, 'm', 1);
     this.updateMinMaxDates();
@@ -314,7 +316,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     ];
     return monthNames[month - 1];
   }
-  
+
 
   updateMinMaxDates() {
     const startOfYear = NgbDate.from({ year: 2020, month: 1, day: 1 }) as NgbDate; // Update start year
@@ -338,20 +340,20 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   // for drop down support
   getDropdownLabel(): string {
-  const currentDay = this.selectedDate.day;
-  const currentMonth = this.selectedDate.month;
-  const currentYear = this.selectedDate.year;
+    const currentDay = this.selectedDate.day;
+    const currentMonth = this.selectedDate.month;
+    const currentYear = this.selectedDate.year;
 
-  const startDate = 1;
-  const endDate = 15;
+    const startDate = 1;
+    const endDate = 15;
 
-  if (currentDay >= startDate && currentDay <= endDate && currentMonth === this.selectedDate.month) {
-    return `${startDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${endDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
-  } else {
-    const lastDayOfMonth = this.getLastDayOfMonth();
-    return `16-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${lastDayOfMonth}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
+    if (currentDay >= startDate && currentDay <= endDate && currentMonth === this.selectedDate.month) {
+      return `${startDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${endDate}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
+    } else {
+      const lastDayOfMonth = this.getLastDayOfMonth();
+      return `16-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${lastDayOfMonth}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
+    }
   }
-}
 
 
   selectFirstHalf() {
@@ -384,7 +386,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     const day = date.day;
     const month = date.month;
     const year = date.year;
-  
+
     if (this.showFirstHalf) {
       const startDate = 1;
       const endDate = 15;
@@ -395,20 +397,20 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       return day >= startDate && day <= endDate && month === this.selectedDate.month && year === this.selectedDate.year;
     }
   }
-  
+
   isFirstHalfSelected(): boolean {
     return this.showFirstHalf;
-  }  
+  }
 
   // for week buttons on right side
   generateWeekButtons() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
     const weeks: { start: number; end: number; month: string }[] = [];
     const currentDate = new Date();
-  
+
     let currentDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
     currentDay.setDate(currentDay.getDate() - currentDay.getDay() + 1); // Start from the first day of the week
-  
+
     while (weeks.length < 6 && currentDay.getMonth() === startDate.getMonth()) {
       const weekStart = currentDay.getDate();
       currentDay.setDate(currentDay.getDate() + 6); // Set to the last day of the week
@@ -417,28 +419,37 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       weeks.push({ start: weekStart, end: weekEnd, month: monthName });
       currentDay.setDate(currentDay.getDate() + 1); // Move to the next day
     }
-    
+
     this.weeks = weeks;
-  
+
     const currentWeek = weeks.find(
       (week) =>
         week.start <= currentDate.getDate() &&
         week.end >= currentDate.getDate() &&
         week.month === this.getCurrentMonthName().substr(0, 3)
     );
-  
+
     if (currentWeek) {
       this.showDays(currentWeek);
     }
   }
-  
-  
+
   // for text box validation
   isValidInput(value: string): boolean {
     const numericValue = Number(value);
     return value === '' || (!isNaN(numericValue) && Number.isInteger(numericValue));
   }
+
+  // pop up a dialog for save
+  showModal() {
+    this.isModalVisible = true;
+  }
   
+  hideModal() {
+    this.isModalVisible = false;
+  }
+  
+
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }

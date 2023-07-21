@@ -4,11 +4,30 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class TimesheetService {private apiUrl = 'https://api.example.com/user'; // Replace with your API URL
+export class TimesheetService {
 
-constructor(private http: HttpClient) { }
+  private baseUrl = 'http://localhost:9000';
 
-getUserDetails() {
-  return this.http.get(this.apiUrl);
-}
+  constructor(private http: HttpClient) { }
+
+  getUsers() {
+    return this.http.get(`${this.baseUrl}/users`);
+  }
+
+  getProjects() {
+    return this.http.get(`${this.baseUrl}/projects`);
+  }
+
+  // getUserProjects() {
+  //   return this.http.get(`${this.baseUrl}/user_projects`);
+  // }
+
+  // getTimesheetData() {
+  //   return this.http.get(`${this.baseUrl}/timesheet_data`);
+  // }
+
+  // getHolidays() {
+  //   return this.http.get(`${this.baseUrl}/holidays`);
+  // }
+
 }

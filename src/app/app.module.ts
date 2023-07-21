@@ -13,6 +13,11 @@ import { LastSubmittedTimesheetComponent } from './components/last-submitted-tim
 import { MyTimesheetsComponent } from './components/my-timesheets/my-timesheets.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { LoginpageComponent } from './components/loginpage/loginpage.component';
+import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
+
+
 
 @NgModule({
   declarations: [
@@ -20,15 +25,19 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     DashboardComponent,
     CreatetimesheetComponent,
     LastTimesheetComponent,
-    LastSubmittedTimesheetComponent
+    LastSubmittedTimesheetComponent,
+    MyTimesheetsComponent,
+    LoginpageComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
     NgbModule,
-    BsDatepickerModule.forRoot(),
+    NgSelectModule,
+    BsDatepickerModule.forRoot()
   ],
   providers: [TimesheetService],
   bootstrap: [AppComponent]

@@ -1,67 +1,119 @@
 .container {
-    margin-top: 20px;
-  }
-  
-  .custom-border {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .profile-icon {
-    font-size: 1rem;
-    color: #000;
-    cursor: pointer;
-    margin-left: 0.75rem; /* Added margin to separate the icon from the dropdown */
-  }
-  
-  .legend-box {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-  }
-  
-  .legend-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-  
-  .legend-rectangle {
-    width: 20px;
-    height: 10px;
-    margin-right: 5px;
-  }
-  
-  .legend-green {
-    background-color: rgba(0, 128, 0, 0.342);
-  }
-  
-  .legend-orange {
-    background-color: rgba(255, 166, 0, 0.333);
-  }
-  
-  .legend-gray {
-    background-color: gray;
-  }
-  
-  .legend-icon {
-    font-size: 1rem;
-    color: #000;
-    cursor: pointer;
-    margin-right: 5px;
-  }
-  
-  .curved-rectangles {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .curved-rectangle {
-    width: 80px;
-    height: 30px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    margin-right: 5px;
-  }
+  margin-top: 20px;
+}
+
+/* left side transition */
+.transition-left {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.slide-out-left {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-in-left {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* right side transition */
+.full-width {
+  width: 95%;
+  transition: width 0.3s ease;
+}
+
+.collapse-left {
+  width: 0;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+
+.border {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.main-custom-border{
+  width: max-content;
+}
+
+#contact-card {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 18rem;
+  background-color: #fff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#contact-card.active {
+  display: block;
+}
+
+.custom-day.current-date {
+  background-color: #f8f9fa; /* Set your desired color for the current date */
+  color: #000000; /* Set the text color for the current date */
+  font-weight: bold; /* Optionally, set the font weight for the current date */
+}
+
+
+.custom-btn {
+  height: 40px;
+  width: 100px;
+  align-items: center;
+  position: relative;
+}
+
+.animation-container {
+  position: absolute;
+  top: 0;
+  right: -7px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.short-width {
+  width: 270px; /* Adjust the width as per your requirements */
+}
+
+.custom-border {
+  border-right-width: 1px; /* Adjust the width as needed */
+}
+
+.custom-margin {
+  margin-right: 68px; /* Adjust the value as per your preference */
+}
+
+.custom-btn-size {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.shadow-hover {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.shadow-hover:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
+}
+
+.custom-btn-size {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.custom-dropdown-menu .dropdown-item.active {
+  background-color: #61affe;
+  color: white;
+}
+
+
+

@@ -1,1 +1,94 @@
-<p>my-timesheets works!</p>
+<div class="container mt-4">
+
+    <div class="row">
+        <!-- open row -->
+        <div id="form-header" class="col" style="margin-left: 132px;">
+            <h3 class="title fw-bold">View My Timesheet</h3>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- open row -->
+        <div id="form-tagline" class="col-md-3 rounded-left py-4 rounded-start" style="background-color: #80cbc4;">
+            <div class="form-tagline text-center">
+                <i class="bi bi-calendar4-week fa-5x mb-4"></i>
+                <h5 style="font-weight: 600;">Your Timesheet Awaits !</h5>
+                <p id="description" class="lead fs-6 fst-italic" style="font-weight: 400;">Track and Manage Your
+                    Time
+                    Effort</p>
+            </div>
+        </div>
+
+        <div id="form-content" class="col-md-6 bg-light rounded-end py-3">
+            <div class="input-group mb-3">
+                <!-- First calendar icon and small input field -->
+                <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                    <i class="fas fa-arrows-alt-h mx-3"></i>
+                    <i class="far fa-calendar-alt"></i>
+                </span>
+                <input type="text" class="form-control col-sm-3" id="dateRange" placeholder="Select date range"
+                    #dateRangePicker />
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="fas fa-tasks"></i>
+                </span>
+                <select class="form-select small" style="cursor: pointer;">
+                    <option disabled selected hidden>Select Project</option>
+                    <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
+                        project }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">
+                    <i class="far fa-check-circle"></i>
+                </span>
+                <select class="form-select" style="cursor: pointer;">
+                    <option disabled selected hidden>Choose Status</option>
+                    <option value="approved" class="text-success fw-bold">Approved</option>
+                    <option value="not-approved" class="text-danger fw-bold">Not Approved</option>
+                </select>
+            </div>
+
+            <!-- button section -->
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-primary me-2" (click)="search()">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <button type="button" class="btn btn-warning me-2" (click)="clearFields()">
+                    <i class="bi bi-arrow-clockwise"></i> Clear
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="goToDashboard()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+
+        <!-- Timesheet Detail report sections -->
+        <div class="table-responsive mt-4" *ngIf="showTable">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-warning">
+                    <tr>
+                        <th>Project Allocated</th>
+                        <ng-container *ngFor="let day of getDaysArray(); let i = index">
+                            <th class="text-center">D{{ i + 1 }}</th>
+                        </ng-container>
+                        <th class="text-center">Total Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let row of tableData">
+                        <tr>
+                            <td>{{ row.project }}</td>
+                            <td *ngFor="let hour of row.hours" class="text-center">{{ hour }}</td>
+                            <td class="text-center">{{ calculateTotal(row.hours) }}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
