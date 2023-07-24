@@ -4,14 +4,13 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
-import lottie from 'lottie-web';
 
 @Component({
-  selector: 'app-last-timesheet',
-  templateUrl: './last-timesheet.component.html',
-  styleUrls: ['./last-timesheet.component.css']
+  selector: 'app-update-timesheet',
+  templateUrl: './update-timesheet.component.html',
+  styleUrls: ['./update-timesheet.component.css']
 })
-export class LastTimesheetComponent {
+export class UpdateTimesheetComponent implements OnInit, AfterViewInit {
   selectedDate: NgbDateStruct;
   minDate: NgbDate;
   maxDate: NgbDate;
@@ -73,6 +72,7 @@ export class LastTimesheetComponent {
     if (currentWeek) {
       this.showDays(currentWeek); // Display the days for the current week range
     }
+
   }
 
   ngAfterViewInit() {
@@ -92,24 +92,6 @@ export class LastTimesheetComponent {
       totalSum.text(sum.toFixed(2));
     });
 
-
-    // for lottie animations
-    const animation = lottie.loadAnimation({
-      container: animationContainer,
-      path: 'assets/lottie/right-arrow-scroll.json', // Replace with your right arrow animation JSON file path
-      renderer: 'svg',
-      loop: true,
-      autoplay: true
-    });
-
-    // // for calendar animation
-    // const dropdownLabelAnimation = lottie.loadAnimation({
-    //   container: this.dropdownLabelContainer.nativeElement,
-    //   path: 'assets/lottie/calendar-loading.json', // Replace with the path to your dropdown label animation JSON file
-    //   renderer: 'svg',
-    //   loop: true,
-    //   autoplay: true
-    // });
   }
 
   toggleLeftSection() {
@@ -175,7 +157,6 @@ export class LastTimesheetComponent {
     });
     this.totalSum = sum;
   }
-
 
   calculateRowTotal(hours: string[]): string {
     let sum = 0;
@@ -432,29 +413,23 @@ export class LastTimesheetComponent {
     }
   }
 
-
   // for text box validation
   isValidInput(value: string): boolean {
     const numericValue = Number(value);
     return value === '' || (!isNaN(numericValue) && Number.isInteger(numericValue));
   }
 
-  // pop up a dialog
+  // pop up a dialog for save
   showModal() {
     this.isModalVisible = true;
   }
-
+  
   hideModal() {
     this.isModalVisible = false;
   }
-
-  updateTimesheet(){
-    this.router.navigate(['/update-timesheet'])
-  }
-
+  
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
-
 
 }

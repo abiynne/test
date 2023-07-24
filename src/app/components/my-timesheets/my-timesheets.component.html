@@ -3,7 +3,7 @@
     <div class="row">
         <!-- open row -->
         <div id="form-header" class="col" style="margin-left: 132px;">
-            <h3 class="title fw-bold">View My Timesheet</h3>
+            <h3 class="title fw-bold">Timesheet Report</h3>
         </div>
     </div>
 
@@ -67,28 +67,5 @@
                 </button>
             </div>
         </div>
-
-        <!-- Timesheet Detail report sections -->
-        <div class="table-responsive mt-4" *ngIf="showTable">
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-warning">
-                    <tr>
-                        <th>Project Allocated</th>
-                        <ng-container *ngFor="let day of getDaysArray(); let i = index">
-                            <th class="text-center">D{{ i + 1 }}</th>
-                        </ng-container>
-                        <th class="text-center">Total Hours</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let row of tableData">
-                        <tr>
-                            <td>{{ row.project }}</td>
-                            <td *ngFor="let hour of row.hours" class="text-center">{{ hour }}</td>
-                            <td class="text-center">{{ calculateTotal(row.hours) }}</td>
-                        </tr>
-                    </ng-container>
-                </tbody>
-            </table>
-        </div>
     </div>
+</div>

@@ -17,10 +17,10 @@ export class MyTimesheetsComponent implements OnInit {
   dateRange: string = ''; // Will hold the selected date range
   tableData: TableRow[] = []; // Will hold the data for the table
   showTable: boolean = false;
-
   selectedStatus: string;
   selectedProject: string = '';
   projects: string[] = [
+    'All Projects',
     'Uprime',
     'Uprime R&D',
     'Open Therapeutics',
@@ -49,6 +49,13 @@ export class MyTimesheetsComponent implements OnInit {
     this.tableData = this.fetchTableData(this.dateRange);
     // Set displayTable to true to show the table
     this.showTable = true;
+
+    this.router.navigate(['/timesheet-report'], {
+      state: {
+        dateRange: this.dateRange,
+        projects: this.projects // Assuming you have the 'projects' array here
+      }
+    });
   }
 
   private fetchTableData(dateRange: string): TableRow[] {
@@ -71,30 +78,12 @@ export class MyTimesheetsComponent implements OnInit {
     return tableData;
   }
 
-  getDaysArray(): Date[] {
-    const startDate = new Date(this.dateRange.split(' - ')[0]);
-    const endDate = new Date(this.dateRange.split(' - ')[1]);
-    const days = [];
-    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-      days.push(new Date(date));
-    }
-    return days;
-  }
-
-
-  calculateTotal(hours: string[]): string {
-    const total = hours.reduce((acc, val) => acc + parseFloat(val), 0);
-    return total.toFixed(2);
-  }
-
   // clear the data selected
   clearFields() {
 
     this.dateRangePicker.nativeElement.value = '';
-
     const projectSelect = document.querySelector('.form-select.small') as HTMLSelectElement;
     projectSelect.selectedIndex = 0;
-
     const statusSelect = document.querySelector('.form-select') as HTMLSelectElement;
     statusSelect.selectedIndex = 0;
 

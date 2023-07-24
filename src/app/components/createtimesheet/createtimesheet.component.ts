@@ -449,11 +449,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.isModalVisible = false;
   }
   
-
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }
 
-
 }
-

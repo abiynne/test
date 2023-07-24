@@ -17,6 +17,8 @@ import { LoginpageComponent } from './components/loginpage/loginpage.component';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { UpdateTimesheetComponent } from './components/update-timesheet/update-timesheet.component';
+import { TimesheetReportComponent } from './components/timesheet-report/timesheet-report.component';
 
 
 
@@ -29,7 +31,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     LastSubmittedTimesheetComponent,
     MyTimesheetsComponent,
     LoginpageComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    UpdateTimesheetComponent,
+    TimesheetReportComponent
   ],
   imports: [
     CommonModule,

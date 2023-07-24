@@ -7,6 +7,8 @@ import { LastSubmittedTimesheetComponent } from './components/last-submitted-tim
 import { MyTimesheetsComponent } from './components/my-timesheets/my-timesheets.component';
 import { LoginpageComponent } from './components/loginpage/loginpage.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { UpdateTimesheetComponent } from './components/update-timesheet/update-timesheet.component';
+import { TimesheetReportComponent } from './components/timesheet-report/timesheet-report.component';
 
 
 const routes: Routes = [
@@ -17,6 +19,8 @@ const routes: Routes = [
   { path: 'last-timesheet', component: LastTimesheetComponent },
   { path: 'last-submitted-timesheet', component: LastSubmittedTimesheetComponent },
   { path: 'my-timesheets', component: MyTimesheetsComponent },
+  { path: 'update-timesheet', component: UpdateTimesheetComponent },
+  { path: 'timesheet-report', component: TimesheetReportComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

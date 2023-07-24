@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Timesheet_Data } from '../models/timesheet_data.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,24 +12,11 @@ export class TimesheetService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers() {
-    return this.http.get(`${this.baseUrl}/users`);
+  // Method to submit the timesheet data to the server
+  submitTimesheet(timesheetData: Timesheet_Data[]): Observable<any> {
+    const url = `${this.baseUrl}/createtimesheet`; 
+    // Send a POST request to the server with the timesheet data
+    return this.http.post(url, timesheetData);
   }
-
-  getProjects() {
-    return this.http.get(`${this.baseUrl}/projects`);
-  }
-
-  // getUserProjects() {
-  //   return this.http.get(`${this.baseUrl}/user_projects`);
-  // }
-
-  // getTimesheetData() {
-  //   return this.http.get(`${this.baseUrl}/timesheet_data`);
-  // }
-
-  // getHolidays() {
-  //   return this.http.get(`${this.baseUrl}/holidays`);
-  // }
 
 }

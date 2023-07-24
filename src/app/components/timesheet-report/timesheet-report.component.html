@@ -1,0 +1,44 @@
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+      <h4 class="text-center fw-bold">Timesheet Details Report</h4>
+      <div class="col-md-10 bg-light rounded p-3">
+        <div class="d-flex justify-content-between mb-3">
+          <!-- First button for the first 15 days -->
+          <button class="btn btn-primary" (click)="showFirst15Days()">01-Jul-2023 to 15-Jul-2023</button>
+  
+          <!-- Second button for the remaining days -->
+          <button class="btn btn-primary" (click)="showRemainingDays()">16-Jul-2023 to 31-Jul-2023</button>
+        </div>
+  
+        <!-- Table to display data -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th style="width: 60%; background-color: #80cbc4;">Project Name</th>
+                <ng-container *ngFor="let day of displayedDays">
+                  <th style="background-color: #80cbc4">D{{ day }}</th>
+                </ng-container>
+                <th style="width: 100%; background-color: #80cbc4;">Total Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of tableData">
+                <td>{{ row.project }}</td>
+                <td *ngFor="let hours of row.hours">{{ hours }}</td>
+                <td class="text-center">{{ getTotalHours(row.hours) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Back button -->
+        <div class="text-center mt-3">
+          <button class="btn btn-secondary" (click)="goToDashboard()">
+            <i class="bi bi-arrow-left"></i> Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <h3 class="fw-bold mt-2">View Last Time Sheet</h3>
+    <h3 class="fw-bold mt-2">Update Time Sheet</h3>
     <div class="row mt-2">
 
         <!-- collapse section -->
@@ -110,9 +110,8 @@
                         </div>
 
                         <div class="mb-0" style="padding-left: 5px">
-                            <span class="contact-name text-primary fw-bold" [ngbPopover]="contactCardContent"
-                                [placement]="'bottom'" triggers="mouseenter" style="cursor: pointer;">Shinto
-                                Chandy</span>
+                            <span class="contact-name text-primary fw-bold" [ngbPopover]="contactCardContent" [placement]="'bottom'"
+                                triggers="mouseenter" style="cursor: pointer;">Shinto Chandy</span>
                         </div>
 
                         <!-- for displaying the contact card contents  -->
@@ -139,12 +138,12 @@
                             </div>
                         </ng-template>
                     </div>
-                    <!-- <div class="d-flex flex-wrap">
+                    <div class="d-flex flex-wrap">
                         <button *ngFor="let week of weeks; let i = index" class="btn btn-outline-primary btn-sm m-2 rounded fw-bold"
                             (click)="showDays(week)">
                             {{ week.start }} {{ week.month | slice:0:3 }} to {{ week.end }} {{ week.month | slice:0:3 }}
                         </button>
-                    </div> -->
+                    </div>
                 </div>
 
                 <!-- Time Sheet Table -->
@@ -185,16 +184,21 @@
                         <tbody>
                             <!-- Data Rows -->
                             <tr *ngFor="let row of rows; let i = index" [id]="'row-' + i">
-                                <td class="col py-2 align-items-center justify-content-start text-center border-0">
-                                    <span class="text-center small text-sm">{{ row.projectName ? row.projectName :
-                                        'Project Name' }}</span>
+                                <td class="col py-2 align-items-center justify-content-start border-0">
+                                    <select class="form-select text-center small text-sm" style="cursor: pointer;">
+                                        <option disabled selected hidden>Select Project</option>
+                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
+                                            project }}
+                                        </option>
+                                    </select>
                                 </td>
 
                                 <ng-container *ngFor="let weekDay of weekDays; let j = index">
                                     <td class="col py-2 border-right border-0">
-                                        <span class="text-center d-inline-block px-1" style="width: 60px;">
-                                            {{ row.hours[j] ? row.hours[j] : '0.00' }}
-                                        </span>
+                                        <input type="text" class="form-control mx-1" style="width: 60px;"
+                                            pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
+                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="3"
+                                            [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" />
                                     </td>
                                 </ng-container>
 
@@ -202,6 +206,29 @@
                                     <div class="sum-box">
                                         <span class="fw-bold small" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours)
                                             }}</span>
+                                    </div>
+
+                                    <!-- Buttons on the last column -->
+
+                                    <i class="mx-4 bi bi-three-dots-vertical text-bold rounded shadow-hover btn btn-outline-secondary btn-sm"
+                                        style="cursor: pointer;" data-bs-toggle="dropdown"></i>
+
+                                    <!-- below we have buttons when click the 3 dots  -->
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
+                                            <i
+                                                class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
+                                            <span class="fw-bold small mx-1">Clear</span>
+                                        </button>
+                                        <button type="button" class="dropdown-item" (click)="addRow()">
+                                            <i class="btn btn-primary custom-btn-size bi bi-plus"></i>
+                                            <span class="fw-bold small mx-1">Add Row</span>
+                                        </button>
+                                        <button type="button" class="dropdown-item" *ngIf="i > 0"
+                                            (click)="deleteRow(i)">
+                                            <i class="btn btn-danger custom-btn-size bi bi-trash"></i>
+                                            <span class="fw-bold small mx-1">Delete</span>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -233,12 +260,12 @@
                 </div>
             </div>
 
-            <!-- for showing the pop up -->
+            <!-- for showing the pop up for sabe-->
             <div class="modal" tabindex="-1" [ngClass]="{'d-block': isModalVisible}" (click)="hideModal()">
                 <div class="modal-dialog modal-dialog-centered modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title fw-bold">Request Status</h5>
+                            <h5 class="modal-title fw-bold">Save Status</h5>
                             <button type="button" class="btn-close" aria-label="Close" (click)="hideModal()">
                             </button>
                         </div>
@@ -246,7 +273,7 @@
                             <div class="d-flex align-items-center justify-content-center">
                                 <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
                             </div>
-                            <p class="text-center my-3">Your edit request has been sent.</p>
+                            <p class="text-center my-3 fw-bold">Your Timesheet has been Updated Successfully</p>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="button" class="btn btn-primary" (click)="hideModal()">OK</button>
@@ -257,9 +284,8 @@
 
             <!-- Main Button Section -->
             <div class="mt-4 d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary mx-1" (click)="updateTimesheet()">Edit</button>
-
                 <button type="button" class="btn btn-danger mx-1" (click)="goToDashboard()">Cancel</button>
+                <button type="button" class="btn btn-primary mx-1" (click)="showModal()">Update</button>
             </div>
         </div>
     </div>
