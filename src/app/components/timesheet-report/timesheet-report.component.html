@@ -1,44 +1,73 @@
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
-      <h4 class="text-center fw-bold">Timesheet Details Report</h4>
-      <div class="col-md-10 bg-light rounded p-3">
-        <div class="d-flex justify-content-between mb-3">
-          <!-- First button for the first 15 days -->
-          <button class="btn btn-primary" (click)="showFirst15Days()">01-Jul-2023 to 15-Jul-2023</button>
-  
-          <!-- Second button for the remaining days -->
-          <button class="btn btn-primary" (click)="showRemainingDays()">16-Jul-2023 to 31-Jul-2023</button>
+        <h4 class="text-center fw-bold">Timesheet Details Report</h4>
+        <div class="col-md-10 bg-light rounded p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- First button for the first 15 days -->
+                <button class="btn btn-outline-primary btn-sm btn-date-range" (click)="showFirst15Days()">01-Jul-2023 to
+                    15-Jul-2023</button>
+
+                <!-- Fields for Employee ID and Name -->
+                <div class="mb-3 text-center">
+                    <div class="fw-bold mb-2 text-danger">Employee Details</div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-2">
+                            <span class="text-muted">Emp ID: </span>
+                            <span class="fw-bold text-primary" id="employeeId">1862</span>
+                        </div>
+                        <div>
+                            <span class="text-muted">Name: </span>
+                            <span class="fw-bold text-primary" id="employeeName">Shinto Chandy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second button for the remaining days -->
+                <button class="btn btn-outline-primary btn-sm btn-date-range" (click)="showRemainingDays()">16-Jul-2023 to
+                    31-Jul-2023</button>
+            </div>
+
+
+            <!-- Table to display data -->
+            <div class="table-responsive">
+                <!-- icons over the table -->
+                <div id="action-buttons" class="align-items-center d-flex justify-content-end">
+                    <button class="btn btn-outline-success btn-sm me-3 btn-icon" title="Export Timesheet" data-bs-toggle="tooltip" (click)="exportToExcel($event)">
+                        <i class="fas fa-file-export"></i> Export Excel
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm btn-icon" title="Print as PDF" data-bs-toggle="tooltip" (click)="printTableAsPdf($event)">
+                        <i class="fas fa-file-pdf"></i> Print PDF
+                    </button>
+                </div>
+                
+                <table class="table table-bordered table-hover mt-2 #table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60%; background-color: #80cbc4;">Project Name</th>
+                            <ng-container *ngFor="let day of displayedDays">
+                                <th style="background-color: #80cbc4">D{{ day }}</th>
+                            </ng-container>
+                            <th style="width: 100%; background-color: #80cbc4;">Total Hours</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let row of tableData">
+                            <td class="fw-bold">{{ row.project }}</td>
+                            <td *ngFor="let hours of row.hours">{{ hours }}</td>
+                            <td class="text-center">{{ getTotalHours(row.hours) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- Back button -->
+            <div id="action-buttons" class="text-center mt-3">
+                <button class="btn btn-secondary" (click)="goToDashboard()">
+                    <i class="bi bi-arrow-left-circle"></i> Back
+                </button>
+            </div>
         </div>
-  
-        <!-- Table to display data -->
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th style="width: 60%; background-color: #80cbc4;">Project Name</th>
-                <ng-container *ngFor="let day of displayedDays">
-                  <th style="background-color: #80cbc4">D{{ day }}</th>
-                </ng-container>
-                <th style="width: 100%; background-color: #80cbc4;">Total Hours</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of tableData">
-                <td>{{ row.project }}</td>
-                <td *ngFor="let hours of row.hours">{{ hours }}</td>
-                <td class="text-center">{{ getTotalHours(row.hours) }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- Back button -->
-        <div class="text-center mt-3">
-          <button class="btn btn-secondary" (click)="goToDashboard()">
-            <i class="bi bi-arrow-left"></i> Back
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-  
+</div>
