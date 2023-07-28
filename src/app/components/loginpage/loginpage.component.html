@@ -38,30 +38,31 @@
                     </div>
                     <div class="row px-3">
                         <label class="mb-1">
-                            <h6 class="mb-0 text-sm fw-bold">Email Address</h6>
+                            <h6 class="mb-0 text-sm fw-bold">User name</h6>
                         </label>
-                        <input class="mb-4" type="text" name="email" placeholder="Enter a valid email address">
+                        <input class="mb-4" type="text" [(ngModel)]="username"
+                            placeholder="Enter a valid email address">
                     </div>
                     <div class="row px-3">
                         <label class="mb-1">
                             <h6 class="mb-0 text-sm fw-bold">Password</h6>
                         </label>
-                        <input type="password" name="password" placeholder="Enter password">
+                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="Enter username">
                     </div>
 
                     <div class="row px-3 mb-3">
                         <div class="d-flex align-items-center">
-                            <input type="checkbox" name="remember_me" id="remember_me" class="me-2 mt-2">
-                            <label for="remember_me" class="mb-0">Remember Me!</label>
+                            <input type="checkbox" [(ngModel)]="showPassword" name="remember_me" id="remember_me" class="me-2 mt-2">
+                            <label for="remember_me" class="mb-0">Show Password</label>
                         </div>
                     </div>
 
                     <div class="text-center text-lg-start mt-4 pt-2">
-                        <button type="button" routerLink="/dashboard" routerLinkActive="active"
+                        <button type="button"
                             class="btn text-white fw-bold"
-                            style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: rgb(64, 64, 199);">Login</button>
-                        <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!"
-                                class="link-danger">Register</a></p>
+                            style="padding-left: 2.5rem; padding-right: 2.5rem; background-color: rgb(64, 64, 199);"
+                            (click)="login()">Login</button>
+                        <p *ngIf="errorMessage" class="small fw-bold text-danger mt-2 pt-1 mb-0">{{ errorMessage }}</p>
                     </div>
                 </div>
             </div>

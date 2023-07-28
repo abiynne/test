@@ -24,11 +24,16 @@
                 <!-- First calendar icon and small input field -->
                 <span class="input-group-text">
                     <i class="far fa-calendar-alt"></i>
-                    <i class="fas fa-arrows-alt-h mx-3"></i>
+                </span>
+                <input type="text" class="form-control col-sm-3" id="fromDate" placeholder="Select From Date"
+                    #fromDatePicker />
+
+                <!-- To Date Picker -->
+                <span class="input-group-text">
                     <i class="far fa-calendar-alt"></i>
                 </span>
-                <input type="text" class="form-control col-sm-3" id="dateRange" placeholder="Select date range"
-                    #dateRangePicker />
+                <input type="text" class="form-control col-sm-3" id="toDate" placeholder="Select To Date"
+                    #toDatePicker />
             </div>
 
             <div class="input-group mb-3">

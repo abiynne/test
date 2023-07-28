@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CreatetimesheetComponent } from './components/createtimesheet/createtimesheet.component';
 import { TimesheetService } from './services/timesheet.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LastTimesheetComponent } from './components/last-timesheet/last-timesheet.component';
 import { LastSubmittedTimesheetComponent } from './components/last-submitted-timesheet/last-submitted-timesheet.component';
 import { MyTimesheetsComponent } from './components/my-timesheets/my-timesheets.component';
@@ -41,6 +41,7 @@ import { TimesheetReportComponent } from './components/timesheet-report/timeshee
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
     BsDatepickerModule.forRoot()

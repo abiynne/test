@@ -14,6 +14,9 @@ interface TableRow {
 })
 export class MyTimesheetsComponent implements OnInit {
 
+  fromDate: string = '';
+  toDate: string = '';
+  buttonsData: { label: string, fromDate: string, toDate: string }[] = [];
   dateRange: string = ''; // Will hold the selected date range
   tableData: TableRow[] = []; // Will hold the data for the table
   showTable: boolean = false;
@@ -33,14 +36,21 @@ export class MyTimesheetsComponent implements OnInit {
     'Approved',
     'Not Approved'
   ];
-  @ViewChild('dateRangePicker') dateRangePicker!: ElementRef<HTMLInputElement>; // for clearing the date range
+  @ViewChild('dateRangePicker') dateRangePicker!: ElementRef<HTMLInputElement>;
+  firstHalfMonth: string;
+  secondHalfMonth: string;
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    // Initialize the date range picker
-    $('#dateRange').daterangepicker({
-      opens: 'left',
+    // Initialize the date pickers
+    $('#fromDate').daterangepicker({
+      singleDatePicker: true,
+      autoApply: true
+    });
+
+    $('#toDate').daterangepicker({
+      singleDatePicker: true,
       autoApply: true
     });
   }
@@ -53,7 +63,7 @@ export class MyTimesheetsComponent implements OnInit {
     this.router.navigate(['/timesheet-report'], {
       state: {
         dateRange: this.dateRange,
-        projects: this.projects // Assuming you have the 'projects' array here
+        projects: this.projects
       }
     });
   }
@@ -80,14 +90,12 @@ export class MyTimesheetsComponent implements OnInit {
 
   // clear the data selected
   clearFields() {
-
     this.dateRangePicker.nativeElement.value = '';
     const projectSelect = document.querySelector('.form-select.small') as HTMLSelectElement;
     projectSelect.selectedIndex = 0;
     const statusSelect = document.querySelector('.form-select') as HTMLSelectElement;
     statusSelect.selectedIndex = 0;
 
-    // Clear the table data and hide the table
     this.tableData = [];
     this.showTable = false;
   }

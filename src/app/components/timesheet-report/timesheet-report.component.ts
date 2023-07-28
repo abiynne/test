@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -18,12 +18,11 @@ interface TableRow {
 
 export class TimesheetReportComponent implements OnInit {
 
-  // Assuming you have this variable with data for each day's hours
   tableData: TableRow[] = [];
-
-  // The displayed days will change based on the selected date range
   displayedDays: number[] = [];
-  selectedDateRange: string = ''; // Default value
+  selectedDateRange: string = ''; 
+  firstDateButtonText: string = ''; 
+  remainingDateButtonText: string = '';
   @ViewChild('table') table!: ElementRef;
   projects: string[] = [
     'Uprime',
@@ -32,11 +31,9 @@ export class TimesheetReportComponent implements OnInit {
     'Shankar Distillers',
     'Vacations',
     'Holidays'
-    // Add more project options if needed
   ];
 
-
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.showFirst15Days();
