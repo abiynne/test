@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { TimesheetService } from 'src/app/services/timesheet.service';
 
 @Component({
@@ -19,30 +19,32 @@ export class LoginpageComponent {
 
   login(): void {
     // Step 1: Get the Token
-    this.timesheetService.getToken().pipe(
-      switchMap(response => {
-        const token = response.token;
-        console.log('Token:', token);
+    this.timesheetService
+      .getToken()
+      .pipe(
+        tap((token) => console.log('Token:', token)),
+        switchMap((token) => {
+          // Step 2: Store the Token
+          // The getToken() method already stores the token securely in the service
+          // You can access it using timesheetService.getAuthToken() if needed
 
-        // Step 2: Store the Token
-        this.timesheetService.setAuthToken(token);
+          // Step 3: Use the Token in the Login Request
+          const headers = this.timesheetService.getAuthHeaders();
 
-        // Step 3: Use the Token in the Login Request
-        const headers = this.timesheetService.getAuthHeaders();
-
-        // Step 4: Make the login request with the token included in the headers
-        return this.timesheetService.authenticate(this.username, this.password);
-      })
-    ).subscribe(
-      () => {
-        // Redirect to the dashboard page after successful login
-        this.router.navigate(['/dashboard']);
-      },
-      error => {
-        this.errorMessage = 'Invalid username or password.';
-        console.error('Authentication failed:', error);
-      }
-    );
+          // Step 4: Make the login request with the token included in the headers
+          return this.timesheetService.authenticate(this.username, this.password);
+        })
+      )
+      .subscribe(
+        (response) => {
+          console.log('Login Response:', response);
+          this.router.navigate(['/dashboard']);
+        },
+        (error) => {
+          this.errorMessage = 'Error: ' + error.message;
+          console.error('Authentication failed:', error);
+        }
+      );
   }
 
   logout(): void {
