@@ -1,5 +1,6 @@
 .container {
   margin-top: 20px;
+  display: flex;
 }
 
 /* left side transition */
@@ -114,7 +115,6 @@
   background-color: #61affe;
   color: white;
 }
-
 
 
 

@@ -1,14 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimesheetService {
 
-  private baseUrl = 'https://employmeindiaapidev.v2soft.com/api/';
-  private authToken: string | null = null; // Store the JWT token here
+  private baseUrl = 'http://employmeindiaapidev.v2soft.com';
 
   constructor(private http: HttpClient) { }
 
@@ -23,24 +22,39 @@ export class TimesheetService {
       .set('Client-service', 'frontend-client')
       .set('Auth-key', 'c6fefec67f4edbf2260c42b0ea116474');
 
-      return this.http.post<any>(`${this.baseUrl}token`, authData, { headers }).pipe(
-        tap(response => console.log('Login API Response:', response))
-      );
+    return this.http.post<any>(`${this.baseUrl}/api/token`, authData, { headers }).pipe(
+      tap(response => {
+        console.log('Login API Response:', response);
+        if (response && response.token) {
+          // Store the received token in session storage
+          this.setAuthToken(response.token);
+        }
+      }),
+      catchError(error => {
+        console.error('Error in getToken():', error);
+        return of(null);
+      })
+    );
   }
 
-  setAuthToken(token: string): void {
+  setAuthToken(tokenResponse: any): void {
+    const token = tokenResponse.token; // Extract the token value from the tokenResponse object
+    console.log('Storing token in session storage:', token);
     sessionStorage.setItem('authToken', token);
   }
-
+  
   getAuthToken(): string | null {
-    // Retrieve the token from local storage or session
-    return sessionStorage.getItem('authToken');
+    const authToken = sessionStorage.getItem('authToken');
+    console.log('Retrieved token from session storage:', authToken);
+    return authToken;
   }
 
   getAuthHeaders(): HttpHeaders {
     const authToken = this.getAuthToken();
     if (authToken) {
-      return new HttpHeaders().set('Authorization', `Bearer ${authToken}`);
+      const headers = new HttpHeaders().set('Auth', authToken);
+      //console.log('Headers:', headers.keys().map(key => `${key}: ${headers.get(key)}`));
+      return headers;
     } else {
       return new HttpHeaders();
     }
@@ -59,11 +73,17 @@ export class TimesheetService {
       .set('Auth-key', 'c6fefec67f4edbf2260c42b0ea116474')
       .set('User-ID', '1');
 
-    return this.http.post<any>(`${this.baseUrl}employeelogin`, authData, { headers: headers });
+    // Log the request body and headers
+    console.log('Request Body:', authData);
+    console.log('Request Headers:');
+    headers.keys().forEach((key) => {
+      console.log(`${key}: ${headers.get(key)}`);
+    });
+
+    return this.http.post<any>(`${this.baseUrl}/api/employeelogin`, authData, { headers: headers });
   }
 
   logout(): void {
     sessionStorage.removeItem('authToken');
   }
-
 }

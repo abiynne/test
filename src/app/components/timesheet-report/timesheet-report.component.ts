@@ -20,6 +20,8 @@ export class TimesheetReportComponent implements OnInit {
 
   tableData: TableRow[] = [];
   displayedDays: number[] = [];
+  fromDate: string = '';
+  toDate: string = '';
   selectedDateRange: string = ''; 
   firstDateButtonText: string = ''; 
   remainingDateButtonText: string = '';
@@ -37,6 +39,7 @@ export class TimesheetReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.showFirst15Days();
+    this.updateButtons();
   }
 
   updateButtons() {

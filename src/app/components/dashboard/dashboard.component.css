@@ -65,8 +65,6 @@
     margin-right: 8px;
   }
 
-
-  /* Add styles to the card title */
 .custom-title {
   position: relative;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
