@@ -1,19 +1,19 @@
 <div class="container-fluid">
-    <h3 class="fw-bold mt-2">Create Time Sheet</h3>
+    <h3 class="fw-bold mt-2 pageheading" >Create Time Sheet</h3>
     <div class="row mt-2">
 
         <!-- collapse section -->
-        <div class="d-flex justify-content-start mb-3">
+        <div class="d-flex justify-content-start mb-3 display-calander">
             <button class="btn btn-success btn-sm" type="button" (click)="toggleLeftSection()">
-                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i>
+                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i> Work Details
             </button>
         </div>
 
         <!-- Left section -->
-        <div class="col-md-3 border-right" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
+        <div class="col-md-3 border-right position-absolute-mobile" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
             <div [class.slide-out-left]="!isLeftSectionVisible" [class.slide-in-left]="isLeftSectionVisible"
                 class="border p-4 transition-left">
-                <div class="dropdown mb-4 text-center align-items-center">
+                <div class="dropdown mt-2 mb-4 text-center align-items-center">
                     <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-calendar2-week mr-2"></i>
@@ -101,8 +101,8 @@
         </div>
 
         <!-- right side section -->
-        <div class="col-md-9" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
-            <div class="border p-4 right-section">
+        <div class="col-md-9 fill-time-sheet" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
+            <div class="border p-4 right-section no-padding-mobile">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
@@ -153,7 +153,7 @@
                         <thead>
                             <tr style="width: 20px;">
                                 <!-- Heading Row -->
-                                <th class=" col py-3 align-items-center justify-content-start text-center"
+                                <th class="d-none d-sm-block col py-3 align-items-center justify-content-start text-center"
                                     style="background-color: #80cbc4">
                                     <div class="time-sheet-box">
                                         <h6 class="fw-bold small text-sm">Project Name</h6>
@@ -181,10 +181,29 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                     
+                           
+                                                   
+                      
+                        <tbody  *ngFor="let row of rows; let i = index" [id]="'row-' + i">
+                            <tr>
+                                <td colspan="4">  <div class="d-block d-sm-none text-center">
+                                   
+                                       <b> Project Name: </b>
+                            
+                                       <select class="form-select text-center small text-sm mt-1 mb-1" style="cursor: pointer;">
+                                        <option disabled selected hidden>Select Project</option>
+                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
+                                            project }}
+                                        </option>
+                                    </select>
+                                
+                                </div></td>
+                            </tr>
                             <!-- Data Rows -->
-                            <tr *ngFor="let row of rows; let i = index" [id]="'row-' + i">
-                                <td class="col py-2 align-items-center justify-content-start border-0">
+                            <tr>
+
+                                <td class="col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
                                     <select class="form-select text-center small text-sm" style="cursor: pointer;">
                                         <option disabled selected hidden>Select Project</option>
                                         <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
@@ -233,10 +252,13 @@
                                 </td>
                             </tr>
                         </tbody>
+
+                        
+
                         <tbody class="mb-3">
 
                             <tr class="border">
-                                <td class="col py-2 align-items-center justify-content-start border-0 bg-light">
+                                <td class="col d-none d-sm-block py-2 align-items-center justify-content-start border-0 bg-light">
                                     <div class="col py-1 d-flex align-items-center justify-content-center">
                                         <h6 class="fw-bold small">Total Hours</h6>
                                     </div>
@@ -283,12 +305,12 @@
             </div>
 
             <!-- Main Button Section -->
-            <div class="mt-4 d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary mx-1" (click)="goToDashboard()">Back</button>
-                <button type="button" class="btn btn-warning mx-1" (click)="showModal()">Save</button>
-                <button type="button" class="btn btn-success mx-1">Submit</button>
-                <button type="button" class="btn btn-danger mx-1">Cancel</button> 
-                <button #arrowButton class="btn btn-secondary mx-1 custom-btn">
+            <div class="mt-4 d-flex justify-content-center action-button">
+                <button type="button" class="btn btn-secondary mx-1 btn-sm" (click)="goToDashboard()">Back</button>
+                <button type="button" class="btn btn-warning mx-1 btn-sm" (click)="showModal()">Save</button>
+                <button type="button" class="btn btn-success mx-1 btn-sm">Submit</button>
+                <button type="button" class="btn btn-danger mx-1 btn-sm">Cancel</button> 
+                <button #arrowButton class="btn btn-secondary mx-1 custom-btn btn-sm">
                     Next
                     <span class="animation-container"></span>
                 </button>
