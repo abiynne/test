@@ -1,19 +1,19 @@
 <div class="container-fluid">
-    <h3 class="fw-bold mt-2">Update Time Sheet</h3>
+    <h3 class="fw-bold mt-2 pageheading">Update Time Sheet</h3>
     <div class="row mt-2">
 
         <!-- collapse section -->
-        <div class="d-flex justify-content-start mb-3">
+        <div class="d-flex justify-content-start mb-3 display-calander">
             <button class="btn btn-success btn-sm" type="button" (click)="toggleLeftSection()">
-                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i>
+                <i [class.bi-chevron-right]="!isLeftSectionVisible" [class.bi-chevron-left]="isLeftSectionVisible"></i> Work Details
             </button>
         </div>
 
         <!-- Left section -->
-        <div class="col-md-3 border-right" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
+        <div class="col-md-3 border-right position-absolute-mobile" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
             <div [class.slide-out-left]="!isLeftSectionVisible" [class.slide-in-left]="isLeftSectionVisible"
                 class="border p-4 transition-left">
-                <div class="dropdown mb-4 text-center align-items-center">
+                <div class="dropdown mb-4 mt-4 text-center align-items-center">
                     <button class="btn btn-secondary dropdown-toggle w-100 focus-visible" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-calendar2-week mr-2"></i>
@@ -101,8 +101,8 @@
         </div>
 
         <!-- right side section -->
-        <div class="col-md-9" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
-            <div class="border p-4 right-section">
+        <div class="col-md-9 fill-time-sheet" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
+            <div class="border p-4 right-section no-padding-mobile">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">

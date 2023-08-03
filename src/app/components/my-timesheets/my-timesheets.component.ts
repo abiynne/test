@@ -39,9 +39,6 @@ export class MyTimesheetsComponent implements OnInit {
   @ViewChild('dateRangePicker') dateRangePicker!: ElementRef<HTMLInputElement>;
   firstHalfMonth: string;
   secondHalfMonth: string;
-  // Use ViewChild to get references to the date pickers
-  @ViewChild('fromDatePicker') fromDatePicker!: ElementRef<HTMLInputElement>;
-  @ViewChild('toDatePicker') toDatePicker!: ElementRef<HTMLInputElement>;
 
   constructor(private router: Router) { }
 
@@ -56,10 +53,6 @@ export class MyTimesheetsComponent implements OnInit {
       singleDatePicker: true,
       autoApply: true
     });
-
-    // Set the selected project to the first value in the projects array put : this.projects[0];
-    this.selectedProject = 'Select Project';
-    this.selectedStatus = 'Choose Status';
   }
 
   search() {
@@ -97,17 +90,11 @@ export class MyTimesheetsComponent implements OnInit {
 
   // clear the data selected
   clearFields() {
-    // Clear the selected values using two-way data binding (ngModel)
-    this.fromDate = '';
-    this.toDate = '';
-    this.selectedProject = '';
-    this.selectedStatus = '';
-
-    // Reset the date picker values by setting their value property to an empty string
-    if (this.fromDatePicker && this.toDatePicker) {
-      this.fromDatePicker.nativeElement.value = '';
-      this.toDatePicker.nativeElement.value = '';
-    }
+    this.dateRangePicker.nativeElement.value = '';
+    const projectSelect = document.querySelector('.form-select.small') as HTMLSelectElement;
+    projectSelect.selectedIndex = 0;
+    const statusSelect = document.querySelector('.form-select') as HTMLSelectElement;
+    statusSelect.selectedIndex = 0;
 
     this.tableData = [];
     this.showTable = false;

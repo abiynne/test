@@ -29,12 +29,14 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   defaultTotalSum: string = '0.00';
   rows: any[] = []; //for DOM add or remove rows
   @ViewChild('arrowButton', { static: false }) arrowButton!: ElementRef<HTMLButtonElement>;
+  // @ViewChild('dropdownLabelContainer', { static: false }) dropdownLabelContainer!: ElementRef<HTMLSpanElement>;
 
   isLeftSectionVisible: boolean = false;
   selectedWeek: string;
   totalSum: number = 0;
   columnTotalSum: number[] = [];
   isModalVisible = false;
+  // for adding rows based on the dropdown count
   selectedProject: string = '';
   projects: string[] = [
     'Uprime',
@@ -91,6 +93,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     } else {
       console.log('No logged-in username found in session storage.');
     }
+
   }
 
   ngAfterViewInit() {
@@ -119,6 +122,15 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       loop: true,
       autoplay: true
     });
+
+    // // for calendar animation
+    // const dropdownLabelAnimation = lottie.loadAnimation({
+    //   container: this.dropdownLabelContainer.nativeElement,
+    //   path: 'assets/lottie/calendar-loading.json', // Replace with the path to your dropdown label animation JSON file
+    //   renderer: 'svg',
+    //   loop: true,
+    //   autoplay: true
+    // });
   }
 
   toggleLeftSection() {

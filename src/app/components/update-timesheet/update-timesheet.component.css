@@ -116,5 +116,55 @@
   }
   
   
+@media (min-width: 320px) and (max-width: 767px) {
+
+  .position-absolute-mobile{
+    position:absolute;
+    z-index: 9;
+    background: #fff;
+  }
+  .display-calander{
+    position: relative;
+    z-index: 11;
+  }
+  .fill-time-sheet{
+    left:3%;
+    width: 94%;
+    position: relative;
+  }
+  .custom-btn{
+    height: 30px !important;
+  }
+  .table-responsive{
+    padding: 0;
+      margin: 0;
+  }
+  .action-button{
+    padding: 0;
+      margin: 0;
+  }
+  .no-padding-mobile{
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  .custom-datepicker .ngb-dp-day, .custom-datepicker .ngb-dp-weekday, .custom-datepicker .ngb-dp-week-number{
+    width: 3rem !important;
+  }
+  .ngb-dp-month{
+    width: 100%;
+  
+  }
+  .pageheading{
+    background: #0f4181;
+    padding: 7px 10px 10px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  .custom-datepicker, .ngb-dp-month{
+    width: 100%;
+    
+  }
+  }
   
   
