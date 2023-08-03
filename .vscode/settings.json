@@ -3,7 +3,9 @@
         "createtimesheet",
         "daterangepicker",
         "employeelogin",
+        "getemployee",
         "loginpage",
+        "supervisordetails",
         "timesheet",
         "timesheets",
         "Uprime"

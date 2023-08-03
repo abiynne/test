@@ -111,7 +111,7 @@
 
                         <div class="mb-0" style="padding-left: 5px">
                             <span class="contact-name text-primary fw-bold" [ngbPopover]="contactCardContent" [placement]="'bottom'"
-                                triggers="mouseenter" style="cursor: pointer;">Shinto Chandy</span>
+                                triggers="mouseenter" style="cursor: pointer;">{{ user?.employee_name }}</span>
                         </div>
 
                         <!-- for displaying the contact card contents  -->
@@ -121,18 +121,18 @@
                                     <i class="bi bi-person-circle" style="font-size: 50px;"></i>
                                 </div>
                                 <div class="card-body pr-4">
-                                    <h5 class="card-title mb-4 fw-bold">Shinto Chandy</h5>
+                                    <h5 class="card-title mb-4 fw-bold">{{ user?.employee_name }}</h5>
                                     <div class="mb-3">
                                         <i class="bi bi-phone-fill text-primary"></i>
-                                        <span class="ms-2">Mobile No: 1234567890</span>
+                                        <span class="ms-2">Mobile No: {{ user?.employee_workphone }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <i class="bi bi-telephone-fill text-primary"></i>
-                                        <span class="ms-2">Work No: 0987654321</span>
+                                        <span class="ms-2">Work No: {{ user?.employee_homephone }}</span>
                                     </div>
                                     <div>
                                         <i class="bi bi-envelope-fill text-primary"></i>
-                                        <span class="ms-2">Email: schandy@v2soft.com</span>
+                                        <span class="ms-2">Email: {{ user?.employee_email }}</span>
                                     </div>
                                 </div>
                             </div>

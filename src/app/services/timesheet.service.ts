@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of, tap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,11 +38,11 @@ export class TimesheetService {
   }
 
   setAuthToken(tokenResponse: any): void {
-    const token = tokenResponse.token; // Extract the token value from the tokenResponse object
+    const token = tokenResponse.token;
     console.log('Storing token in session storage:', token);
     sessionStorage.setItem('authToken', token);
   }
-  
+
   getAuthToken(): string | null {
     const authToken = sessionStorage.getItem('authToken');
     console.log('Retrieved token from session storage:', authToken);
@@ -53,13 +53,13 @@ export class TimesheetService {
     const authToken = this.getAuthToken();
     if (authToken) {
       const headers = new HttpHeaders().set('Auth', authToken);
-      //console.log('Headers:', headers.keys().map(key => `${key}: ${headers.get(key)}`));
       return headers;
     } else {
       return new HttpHeaders();
     }
   }
 
+  /* For employee login */
   authenticate(username: string, password: string): Observable<any> {
     const authData = {
       username: username,
@@ -79,11 +79,55 @@ export class TimesheetService {
     headers.keys().forEach((key) => {
       console.log(`${key}: ${headers.get(key)}`);
     });
+    console.log('Username before setting in session storage:', username);
+    sessionStorage.setItem('username', username);
 
     return this.http.post<any>(`${this.baseUrl}/api/employeelogin`, authData, { headers: headers });
   }
 
+  /* For getting the user details */
+  getLoggedInUserDetails(username: string): Observable<any> {
+    const headers = this.getAuthHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Client-service', 'frontend-client')
+      .set('Auth-key', 'c6fefec67f4edbf2260c42b0ea116474')
+      .set('User-ID', '1');
+
+    console.log('Request Headers:');
+    headers.keys().forEach((key) => {
+      console.log(`${key}: ${headers.get(key)}`);
+    });
+
+    
+
+    // Call the API to fetch the logged-in user's details based on the username
+    return this.http.post<any>(`${this.baseUrl}/api/getemployee`, {}, { headers: headers }).pipe(
+      map(response => {
+        if (response && Array.isArray(response.supervisordetails)) {
+          const loggedInUserDetail = response.supervisordetails.find((detail: any) => detail.employee_username === username);
+
+          // store the employee id in session
+          if (loggedInUserDetail) {
+            sessionStorage.setItem('employeeId', loggedInUserDetail.employee_id);
+            const employeeId = sessionStorage.getItem('employeeId');
+            console.log('Employee ID:', employeeId);
+          }
+          
+          return loggedInUserDetail || null;
+        } else {
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error('Error in getLoggedInUserDetails:', error);
+        return of(null);
+      })
+    );
+  }
+
+  /* for logout section */
   logout(): void {
     sessionStorage.removeItem('authToken');
   }
+
 }

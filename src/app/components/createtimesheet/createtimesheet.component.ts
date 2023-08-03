@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import lottie from 'lottie-web';
+import { TimesheetService } from 'src/app/services/timesheet.service';
 
 @Component({
   selector: 'app-createtimesheet',
@@ -44,8 +45,10 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     'Holidays'
     // Add more project options if needed
   ];
+  user: any;
 
-  constructor(private calendar: NgbCalendar, private dateParser: NgbDateParserFormatter, private sanitizer: DomSanitizer, private router: Router) {
+
+  constructor(private timesheetService: TimesheetService, private calendar: NgbCalendar, private dateParser: NgbDateParserFormatter, private sanitizer: DomSanitizer, private router: Router) {
     const today = this.calendar.getToday();
     this.selectedDate = today;
     this.minDate = this.calendar.getPrev(this.calendar.getToday(), 'y', 5) as NgbDate; // Update to 10 years before current year
@@ -70,7 +73,23 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     const currentWeek = this.weeks.find(week => week.start <= currentDate && week.end >= currentDate);
 
     if (currentWeek) {
-      this.showDays(currentWeek); 
+      this.showDays(currentWeek);
+    }
+
+    // Fetch the logged-in user details from the service and store them in the 'user' variable
+    const loggedInUsername = sessionStorage.getItem('username');
+    if (loggedInUsername) {
+      this.timesheetService.getLoggedInUserDetails(loggedInUsername).subscribe(
+        (user) => {
+          console.log('Logged-in User Details:', user);
+          this.user = user;
+        },
+        (error) => {
+          console.error('Error fetching logged-in user details:', error);
+        }
+      );
+    } else {
+      console.log('No logged-in username found in session storage.');
     }
   }
 
@@ -120,7 +139,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     if (this.rows.length < dropdownCount) {
       const newRow: { project: string, hours: string[] } = { project: this.selectedProject, hours: [] };
       for (let i = 0; i < this.daysOfWeek.length; i++) {
-        newRow.hours.push(''); // Initialize hours array with empty values
+        newRow.hours.push('');
       }
       this.rows.push(newRow);
       const newRowIdx = this.rows.length - 1;
@@ -432,11 +451,11 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   showModal() {
     this.isModalVisible = true;
   }
-  
+
   hideModal() {
     this.isModalVisible = false;
   }
-  
+
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }

@@ -34,7 +34,6 @@ export class LoginpageComponent {
       (response) => {
         console.log('Login Response:', response);
         if (response.status === 200) {
-          // Successful login, navigate to the dashboard
           this.router.navigate(['/dashboard']);
         } else {
           // Unsuccessful login, display the error message
