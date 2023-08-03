@@ -9,7 +9,8 @@
 
     <div class="row justify-content-center">
         <!-- open row -->
-        <div id="form-tagline" class="col-md-3 rounded-left py-4 rounded-start card-container" style="background-color: #80cbc4;">
+        <div id="form-tagline" class="col-md-3 rounded-left py-4 rounded-start card-container"
+            style="background-color: #80cbc4;">
             <div class="form-tagline text-center">
                 <i class="bi bi-calendar4-week fa-5x mb-4"></i>
                 <h5 style="font-weight: 600;">Your Timesheet Awaits !</h5>
@@ -26,21 +27,22 @@
                     <i class="far fa-calendar-alt"></i>
                 </span>
                 <input type="text" class="form-control col-sm-3" id="fromDate" placeholder="Select From Date"
-                    #fromDatePicker />
+                    [(ngModel)]="fromDate" #fromDatePicker />
 
                 <!-- To Date Picker -->
                 <span class="input-group-text">
                     <i class="far fa-calendar-alt"></i>
                 </span>
                 <input type="text" class="form-control col-sm-3" id="toDate" placeholder="Select To Date"
-                    #toDatePicker />
+                    [(ngModel)]="toDate" #toDatePicker />
             </div>
 
             <div class="input-group mb-3">
                 <span class="input-group-text">
                     <i class="fas fa-tasks"></i>
                 </span>
-                <select class="form-select small" style="cursor: pointer;">
+                
+                <select class="form-select small" style="cursor: pointer;" [(ngModel)]="selectedProject">
                     <option disabled selected hidden>Select Project</option>
                     <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
                         project }}
@@ -52,7 +54,7 @@
                 <span class="input-group-text">
                     <i class="far fa-check-circle"></i>
                 </span>
-                <select class="form-select" style="cursor: pointer;">
+                <select class="form-select" style="cursor: pointer;" [(ngModel)]="selectedStatus">
                     <option disabled selected hidden>Choose Status</option>
                     <option value="approved" class="text-success fw-bold">Approved</option>
                     <option value="not-approved" class="text-danger fw-bold">Not Approved</option>

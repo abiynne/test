@@ -201,12 +201,11 @@
                                 </div></td>
                             </tr>
                             <!-- Data Rows -->
-                            <tr>
-
+                            <tr *ngFor="let row of rows; let i = index" [id]="'row-' + i">
                                 <td class="col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
-                                    <select class="form-select text-center small text-sm" style="cursor: pointer;">
+                                    <select class="form-select small text-sm" style="cursor: pointer;">
                                         <option disabled selected hidden>Select Project</option>
-                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
+                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold justify-content-start">{{
                                             project }}
                                         </option>
                                     </select>
@@ -216,7 +215,7 @@
                                     <td class="col py-2 border-right border-0">
                                         <input type="text" class="form-control mx-1" style="width: 60px;"
                                             pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
-                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="3"
+                                            [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="2"
                                             [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" />
                                     </td>
                                 </ng-container>
