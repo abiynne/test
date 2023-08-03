@@ -3,3 +3,16 @@
         display: none !important;
     }
 }
+
+@media (min-width: 320px) and (max-width: 767px) {
+
+  
+    .pageheading{
+      background: #0f4181;
+      padding: 7px 10px 10px;
+      border-radius: 5px;
+      color: #fff;
+      width: 95%;
+    }
+   
+    }

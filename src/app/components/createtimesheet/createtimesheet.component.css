@@ -146,12 +146,9 @@
   padding: 0 !important;
   border: none !important;
 }
-ngb-datepicker{
-  width: 100%;
-  
-}
-.ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number{
-  width: 3rem;
+
+.custom-datepicker .ngb-dp-day, .custom-datepicker .ngb-dp-weekday, .custom-datepicker .ngb-dp-week-number{
+  width: 3rem !important;
 }
 .ngb-dp-month{
   width: 100%;
@@ -162,5 +159,9 @@ ngb-datepicker{
   padding: 7px 10px 10px;
   border-radius: 5px;
   color: #fff;
+}
+.custom-datepicker, .ngb-dp-month{
+  width: 100%;
+  
 }
 }

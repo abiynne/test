@@ -97,3 +97,73 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
   transform: translateY(-4px) scale(1.03) rotate(2deg); 
 }
+
+@media (min-width:320px) and (max-width:767px) {
+  .mp-0{
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .header-ui{
+    background: #204282;
+    color: #fff;
+    border-radius: 0;
+    border: 0;
+    margin: 0 !important;
+  }
+  h4.custom-title{
+    animation: none !important;
+    transition: none !important;
+  }
+  .Logout{
+    background-color: #fff;
+    border-radius: 50%;
+    height:40px;
+    width:40px;
+    color: #204282;
+    text-align: center;
+    display: block !important;
+    font-size: 1.4rem;
+    font-weight: 700 !important;
+    border: none;
+    border: none;
+    line-height: 22px !important;
+  }
+  .time-sheet-analysis{
+    background: #242525;
+    margin: 0 !important;
+    padding: 10px 15px;
+  }
+  .project-management{
+    background: #ff8000;
+    margin: 0 !important;
+    padding: 10px 15px;
+  }
+  .welcome-back{
+    padding: 10px 15px;
+    margin-bottom: 0 !important;
+  }
+  .prductivity, .financial{
+    padding: 10px 15px;
+    margin-bottom: 0 !important;
+  }
+  .project-management .card-body, .time-sheet-analysis .card-body, .welcome-back .card-body, .prductivity .card-body, .financial .card-body{
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .project-management i, .time-sheet-analysis i, .welcome-back i, .prductivity i, .financial i{
+    font-size: 2.5rem;
+  }
+  .list-group{
+    border-radius: 0 !important;
+    border: none !important;
+    color: #204282;
+  }
+  .list-group a{
+    color: #204282;
+  }
+  .list-group a i{
+    font-size: 1.3rem;
+  }
+ 
+  
+}

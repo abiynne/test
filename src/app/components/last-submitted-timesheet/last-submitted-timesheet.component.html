@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <h3 class="fw-bold mt-2">Submitted Time Sheet</h3>
+    <h3 class="fw-bold mt-2 pageheading">Submitted Time Sheet</h3>
     <div class="row mt-4">
 
         <!-- collapse section -->
@@ -10,7 +10,7 @@
         </div> -->
 
         <!-- Left section -->
-        <div class="col-md-3 border-right" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
+        <div class="col-md-3 border-right position-absolute-mobile" [ngClass]="{ 'collapse-left': !isLeftSectionVisible }">
             <div [class.slide-out-left]="!isLeftSectionVisible" [class.slide-in-left]="isLeftSectionVisible"
                 class="border p-4 transition-left">
                 <div class="dropdown mb-4 text-center align-items-center">
@@ -102,7 +102,7 @@
 
         <!-- right side section -->
         <div class="col-md-9" [ngClass]="{ 'full-width': !isLeftSectionVisible }">
-            <div class="border p-4 right-section">
+            <div class="border p-4 right-section no-padding-mobile">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
@@ -159,6 +159,13 @@
                                         <h6 class="fw-bold small text-sm">Project Name</h6>
                                     </div>
                                 </th>
+                                 <!-- Total Hours section -->
+                                 <th scope="col" class="col py-3 align-items-center justify-content-start"
+                                 style="background-color: #80cbc4">
+                                 <div class="time-sheet-box small text-sm">
+                                     <span class="time-sheet-label fw-bold">Total Hours</span>
+                                 </div>
+                             </th>
 
                                 <!-- Days of the Week section -->
                                 <ng-container *ngFor="let day of daysOfWeek">
@@ -171,13 +178,7 @@
                                     </th>
                                 </ng-container>
 
-                                <!-- Total Hours section -->
-                                <th scope="col" class="col py-3 align-items-center justify-content-start"
-                                    style="background-color: #80cbc4">
-                                    <div class="time-sheet-box small text-sm">
-                                        <span class="time-sheet-label fw-bold">Total Hours</span>
-                                    </div>
-                                </th>
+                               
                             </tr>
                         </thead>
 
@@ -187,7 +188,12 @@
                                 <td class="col py-2 align-items-center justify-content-start text-center border-0">
                                     <span class="text-center small text-sm">{{ row.projectName ? row.projectName : 'Project Name' }}</span>
                                 </td>
-                                
+                                <td class="col d-flex border-0">
+                                    <div class="sum-box">
+                                        <span class="fw-bold small" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours)
+                                            }}</span>
+                                    </div>
+                                </td>
                                 <ng-container *ngFor="let weekDay of weekDays; let j = index">
                                     <td class="col py-2 border-right border-0">
                                         <span class="text-center d-inline-block px-1" style="width: 60px;">
@@ -196,12 +202,7 @@
                                     </td>
                                 </ng-container>
                                 
-                                <td class="col d-flex border-0">
-                                    <div class="sum-box">
-                                        <span class="fw-bold small" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours)
-                                            }}</span>
-                                    </div>
-                                </td>
+                                
                             </tr>
                         </tbody>
                         <tbody class="mb-3">
