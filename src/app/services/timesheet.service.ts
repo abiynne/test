@@ -7,8 +7,7 @@ import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 })
 export class TimesheetService {
 
-  private baseUrl = 'https://employmeindiaapidev.v2soft.com/api/';
-  private authToken: string | null = null; // Store the JWT token here
+  private baseUrl = 'http://employmeindiaapidev.v2soft.com';
 
   constructor(private http: HttpClient) { }
 
@@ -23,9 +22,19 @@ export class TimesheetService {
       .set('Client-service', 'frontend-client')
       .set('Auth-key', 'c6fefec67f4edbf2260c42b0ea116474');
 
-      return this.http.post<any>(`${this.baseUrl}token`, authData, { headers }).pipe(
-        tap(response => console.log('Login API Response:', response))
-      );
+    return this.http.post<any>(`${this.baseUrl}/api/token`, authData, { headers }).pipe(
+      tap(response => {
+        console.log('Login API Response:', response);
+        if (response && response.token) {
+          // Store the received token in session storage
+          this.setAuthToken(response.token);
+        }
+      }),
+      catchError(error => {
+        console.error('Error in getToken():', error);
+        return of(null);
+      })
+    );
   }
 
   setAuthToken(tokenResponse: any): void {
@@ -35,8 +44,9 @@ export class TimesheetService {
   }
 
   getAuthToken(): string | null {
-    // Retrieve the token from local storage or session
-    return sessionStorage.getItem('authToken');
+    const authToken = sessionStorage.getItem('authToken');
+    console.log('Retrieved token from session storage:', authToken);
+    return authToken;
   }
 
   getAuthHeaders(): HttpHeaders {
@@ -102,7 +112,7 @@ export class TimesheetService {
             const employeeId = sessionStorage.getItem('employeeId');
             console.log('Employee ID:', employeeId);
           }
-
+          
           return loggedInUserDetail || null;
         } else {
           return null;
@@ -119,5 +129,4 @@ export class TimesheetService {
   logout(): void {
     sessionStorage.removeItem('authToken');
   }
-
 }

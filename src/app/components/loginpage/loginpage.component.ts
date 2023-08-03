@@ -8,8 +8,8 @@ import { TimesheetService } from 'src/app/services/timesheet.service';
   templateUrl: './loginpage.component.html',
   styleUrls: ['./loginpage.component.css']
 })
-export class LoginpageComponent {
 
+export class LoginpageComponent {
   username: string;
   password: string;
   showPassword: boolean = false;
@@ -20,7 +20,6 @@ export class LoginpageComponent {
   login(): void {
     // Step 1: Get the Token
     this.timesheetService.getToken().pipe(
-      tap(token => console.log('Token:', token)), 
       switchMap(token => {
         // Step 2: Store the Token
         this.timesheetService.setAuthToken(token);
@@ -42,7 +41,7 @@ export class LoginpageComponent {
         }
       },
       (error) => {
-        this.errorMessage = 'Error: ' + error.message;  
+        this.errorMessage = 'Error: ' + error.message;
         console.error('Authentication failed:', error);
       }
     );
