@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { TimesheetService } from 'src/app/services/timesheet.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +9,10 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent {
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private timesheetService: TimesheetService){}
 
   goToLogin() {
+    this.timesheetService.logout();
     this.router.navigate(['/loginpage']);
   }
 

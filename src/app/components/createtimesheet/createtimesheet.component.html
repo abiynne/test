@@ -193,9 +193,9 @@
                             
                                        <select class="form-select text-center small text-sm mt-1 mb-1" style="cursor: pointer;">
                                         <option disabled selected hidden>Select Project</option>
-                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold">{{
-                                            project }}
-                                        </option>
+                                            <option *ngFor="let project of projectName" [value]="project" class="fw-bold">{{
+                                                project }}
+                                            </option>
                                     </select>
                                 
                                 </div></td>
@@ -205,7 +205,7 @@
                                 <td class="col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
                                     <select class="form-select small text-sm" style="cursor: pointer;">
                                         <option disabled selected hidden>Select Project</option>
-                                        <option *ngFor="let project of projects" [value]="project" class="fw-bold justify-content-start">{{
+                                        <option *ngFor="let project of projectName" [value]="project" class="fw-bold justify-content-start">{{
                                             project }}
                                         </option>
                                     </select>

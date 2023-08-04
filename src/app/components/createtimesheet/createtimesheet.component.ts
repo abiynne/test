@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import lottie from 'lottie-web';
 import { TimesheetService } from 'src/app/services/timesheet.service';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-createtimesheet',
@@ -38,16 +39,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   isModalVisible = false;
   // for adding rows based on the dropdown count
   selectedProject: string = '';
-  projects: string[] = [
-    'Uprime',
-    'Uprime R&D',
-    'Open Therapeutics',
-    'Shankar Distillers',
-    'Vacations',
-    'Holidays'
-    // Add more project options if needed
-  ];
   user: any;
+  projectName: string[] = [''];
 
 
   constructor(private timesheetService: TimesheetService, private calendar: NgbCalendar, private dateParser: NgbDateParserFormatter, private sanitizer: DomSanitizer, private router: Router) {
@@ -81,19 +74,28 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     // Fetch the logged-in user details from the service and store them in the 'user' variable
     const loggedInUsername = sessionStorage.getItem('username');
     if (loggedInUsername) {
-      this.timesheetService.getLoggedInUserDetails(loggedInUsername).subscribe(
-        (user) => {
+      this.timesheetService.getLoggedInUserDetails(loggedInUsername).pipe(
+        switchMap(user => {
           console.log('Logged-in User Details:', user);
-          this.user = user;
+          this.user = user; // Store the user details
+          return this.timesheetService.getLoggedInUserAndProjectNames(); // Fetch project names
+        })
+      ).subscribe(
+        projectNames => {
+          if (projectNames) {
+            console.log('Matching Project Names:', projectNames);
+            this.projectName = projectNames;
+          } else {
+            console.log('No matching projects found.');
+          }
         },
-        (error) => {
-          console.error('Error fetching logged-in user details:', error);
+        error => {
+          console.error('Error:', error);
         }
       );
     } else {
       console.log('No logged-in username found in session storage.');
     }
-
   }
 
   ngAfterViewInit() {
@@ -122,15 +124,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       loop: true,
       autoplay: true
     });
-
-    // // for calendar animation
-    // const dropdownLabelAnimation = lottie.loadAnimation({
-    //   container: this.dropdownLabelContainer.nativeElement,
-    //   path: 'assets/lottie/calendar-loading.json', // Replace with the path to your dropdown label animation JSON file
-    //   renderer: 'svg',
-    //   loop: true,
-    //   autoplay: true
-    // });
   }
 
   toggleLeftSection() {
@@ -147,7 +140,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   }
 
   addRow() {
-    const dropdownCount = this.projects.length;
+    const dropdownCount = this.projectName.length;
     if (this.rows.length < dropdownCount) {
       const newRow: { project: string, hours: string[] } = { project: this.selectedProject, hours: [] };
       for (let i = 0; i < this.daysOfWeek.length; i++) {
