@@ -225,7 +225,8 @@
                                         <input type="text" class="form-control mx-1" style="width: 60px;"
                                             pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
                                             [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="2"
-                                            [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" />
+                                            [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" 
+                                            [readonly]="shouldInputBeReadonly(day)" />
                                     </td>
                                 </ng-container>
 

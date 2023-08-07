@@ -217,6 +217,22 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return sum.toFixed(2);
   }
 
+  shouldInputBeReadonly(day: Date): boolean {
+    const currentDay = new Date();
+    const selectedDay = new Date(this.selectedDate.year, this.selectedDate.month - 1, day.getDate());
+
+    const isFirstHalfSelected = this.showFirstHalf;
+    const isCurrentDayInFirstHalf = currentDay.getDate() <= 15;
+
+    if ((isFirstHalfSelected && isCurrentDayInFirstHalf) || (!isFirstHalfSelected && !isCurrentDayInFirstHalf)) {
+        // Current day lies in the same half as selected or in the future half
+        return false;
+    } else {
+        // Current day is in a different half, make the input readonly
+        return true;
+    }
+}
+
   // for clearing the input that was entered from th text field and from sum  field
   clearTextFields(rowIndex: number) {
     const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
@@ -292,6 +308,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateDropdownLabel();
     this.generateWeekButtons();
     this.generateWeekDays(); // new method
+    
   }
 
   nextMonth() {
@@ -453,7 +470,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       (week) =>
         week.start <= currentDate.getDate() &&
         week.end >= currentDate.getDate() &&
-        week.month === this.getCurrentMonthName().substr(0, 3)
+        week.month === this.getMonthName(this.selectedDate.month)
     );
 
     if (currentWeek) {
