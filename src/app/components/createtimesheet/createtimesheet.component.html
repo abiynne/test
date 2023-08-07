@@ -156,13 +156,13 @@
                 <!-- Time Sheet Table -->
 
                 <div class="container table-responsive">
-                    <table class="table border w-100">
+                    <table class="table-wrapper border w-100">
                         <thead>
                             <tr style="width: 20px;">
                                 <!-- Heading Row -->
                                 <th class="d-none d-sm-block col py-3 align-items-center justify-content-start text-center"
                                     style="background-color: #80cbc4">
-                                    <div class="time-sheet-box">
+                                    <div class="time-sheet-box" style="white-space: nowrap;">
                                         <h6 class="fw-bold small text-sm">Project Name</h6>
                                     </div>
                                 </th>
@@ -211,7 +211,7 @@
                             <tr>
                                 <td
                                     class="col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
-                                    <select class="form-select small text-sm" style="cursor: pointer;">
+                                    <select class="form-select small text-sm" style="cursor: pointer; width: auto;">
                                         <option disabled selected hidden>Select Project</option>
                                         <option *ngFor="let project of projectName" [value]="project"
                                             class="fw-bold justify-content-start">{{
@@ -242,8 +242,7 @@
                                     <!-- below we have buttons when click the 3 dots  -->
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                         <button type="button" class="dropdown-item" (click)="clearTextFields(i)">
-                                            <i
-                                                class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
+                                            <i class="btn btn-secondary custom-btn-size bi bi-arrow-counterclockwise"></i>
                                             <span class="fw-bold small mx-1">Clear</span>
                                         </button>
                                         <button type="button" class="dropdown-item" (click)="addRow()">

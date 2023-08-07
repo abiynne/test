@@ -1,6 +1,7 @@
-.container {
-  margin-top: 20px;
+.container-fluid {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 /* left side transition */
@@ -36,7 +37,7 @@
   border-radius: 5px;
 }
 
-.main-custom-border{
+.main-custom-border {
   width: max-content;
 }
 
@@ -58,11 +59,10 @@
 }
 
 .custom-day.current-date {
-  background-color: #f8f9fa; /* Set your desired color for the current date */
-  color: #000000; /* Set the text color for the current date */
-  font-weight: bold; /* Optionally, set the font weight for the current date */
+  background-color: #f8f9fa;
+  color: #000000;
+  font-weight: bold;
 }
-
 
 .custom-btn {
   height: 40px;
@@ -81,15 +81,18 @@
 }
 
 .short-width {
-  width: 270px; /* Adjust the width as per your requirements */
+  width: 270px;
+  /* Adjust the width as per your requirements */
 }
 
 .custom-border {
-  border-right-width: 1px; /* Adjust the width as needed */
+  border-right-width: 1px;
+  /* Adjust the width as needed */
 }
 
 .custom-margin {
-  margin-right: 68px; /* Adjust the value as per your preference */
+  margin-right: 68px;
+  /* Adjust the value as per your preference */
 }
 
 .custom-btn-size {
@@ -115,56 +118,108 @@
   background-color: #61affe;
   color: white;
 }
-.m-width{
+
+.m-width {
   max-width: 320px;
 }
+
 @media (min-width: 320px) and (max-width: 767px) {
 
-.position-absolute-mobile{
-  position:absolute;
-  z-index: 9;
-  background: #fff;
-}
-.display-calander{
-  position: relative;
-  z-index: 11;
-}
-.fill-time-sheet{
-  left:3%;
-  width: 94%;
-  position: relative;
-}
-.custom-btn{
-  height: 30px !important;
-}
-.table-responsive{
-  padding: 0;
+  .position-absolute-mobile {
+    position: absolute;
+    z-index: 9;
+    background: #fff;
+  }
+
+  .display-calander {
+    position: relative;
+    z-index: 11;
+  }
+
+  .fill-time-sheet {
+    left: 3%;
+    width: 94%;
+    position: relative;
+  }
+
+  .custom-btn {
+    height: 30px !important;
+  }
+
+  .table-responsive {
+    padding: 0;
     margin: 0;
-}
-.action-button{
-  padding: 0;
+  }
+
+  .action-button {
+    padding: 0;
     margin: 0;
-}
-.no-padding-mobile{
-  padding: 0 !important;
-  border: none !important;
+  }
+
+  .no-padding-mobile {
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  .custom-datepicker .ngb-dp-day,
+  .custom-datepicker .ngb-dp-weekday,
+  .custom-datepicker .ngb-dp-week-number {
+    width: 3rem !important;
+  }
+
+  .ngb-dp-month {
+    width: 100%;
+
+  }
+
+  .pageheading {
+    background: #0f4181;
+    padding: 7px 10px 10px;
+    border-radius: 5px;
+    color: #fff;
+  }
+
+  .custom-datepicker,
+  .ngb-dp-month {
+    width: 100%;
+
+  }
 }
 
-.custom-datepicker .ngb-dp-day, .custom-datepicker .ngb-dp-weekday, .custom-datepicker .ngb-dp-week-number{
-  width: 3rem !important;
+/* for making the first and last column sticky */
+/* thead {
+  top: 0;
+  position: sticky;
+  z-index: 1;
 }
-.ngb-dp-month{
-  width: 100%;
 
+tr td:nth-child(1),
+tr th:nth-child(1) {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+  z-index: 2;
+  transform: translateX(0);
 }
-.pageheading{
-  background: #0f4181;
-  padding: 7px 10px 10px;
-  border-radius: 5px;
-  color: #fff;
+
+tr th:nth-child(1) {
+  left: 0;
 }
-.custom-datepicker, .ngb-dp-month{
-  width: 100%;
-  
+
+tr td:last-child,
+tr th:last-child {
+  position: sticky;
+  right: 0;
+  background-color: #fff;
+  z-index: 2;
+  transform: translateX(0);
 }
+
+tr th:last-child {
+  right: 0;
 }
+
+.table-responsive {
+  overflow-x: auto;
+  display: inline-block;
+} */

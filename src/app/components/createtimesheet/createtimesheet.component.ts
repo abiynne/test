@@ -130,6 +130,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   toggleLeftSection() {
     this.isLeftSectionVisible = !this.isLeftSectionVisible;
   }
+  
 
   isCurrentDate(date: NgbDate): boolean {
     const currentDate = new Date();
@@ -218,29 +219,31 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   // for clearing the input that was entered from th text field and from sum  field
   clearTextFields(rowIndex: number) {
     const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
+    const rowTotalElement = $(`#totalSum-${rowIndex}`);
+    
     rowInputs.val('');
-
-    const totalSumElement = $(`#totalSum-${rowIndex}`);
-    totalSumElement.text('0.00');
+    rowTotalElement.text('0.00');
 
     const selectElement = $(`#row-${rowIndex} select.form-select`);
     selectElement.prop('selectedIndex', 0);
 
-    this.calculateTotalSum(); // Recalculate the total sum
-
-    // Clear the column total values for the refreshed row
-    for (let weekDay = 1; weekDay <= this.weekDays.length; weekDay++) {
-      this.columnTotalSum[weekDay - 1] -= parseFloat(this.rows[rowIndex].hours[weekDay - 1]) || 0;
-      this.rows[rowIndex].hours[weekDay - 1] = ''; // Clear the text field value
+    // Clear the column total values for the cleared row
+    for (let weekDay = 0; weekDay < this.daysOfWeek.length; weekDay++) {
+      const value = parseFloat(this.rows[rowIndex].hours[weekDay]) || 0;
+      this.columnTotalSum[weekDay] -= value;
+      this.rows[rowIndex].hours[weekDay] = ''; // Clear the text field value
     }
 
     // Update the column total elements in the UI
-    for (let weekDay = 1; weekDay <= this.weekDays.length; weekDay++) {
-      const columnTotal = this.columnTotalSum[weekDay - 1].toFixed(2);
+    for (let weekDay = 0; weekDay < this.daysOfWeek.length; weekDay++) {
+      const columnTotal = this.columnTotalSum[weekDay].toFixed(2);
       const columnTotalElement = $(`#totalSum-${weekDay}`);
       columnTotalElement.text(columnTotal);
     }
-  }
+
+    this.calculateTotalSum(); // Recalculate the total sum
+}
+
 
   generateWeekDays() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
@@ -369,7 +372,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       return `16-${this.getCurrentMonthName().substr(0, 3)}-${currentYear} to ${lastDayOfMonth}-${this.getCurrentMonthName().substr(0, 3)}-${currentYear}`;
     }
   }
-
 
   selectFirstHalf() {
     // Set the showFirstHalf variable to true
