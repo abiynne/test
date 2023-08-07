@@ -186,40 +186,37 @@
   }
 }
 
-/* for making the first and last column sticky */
-/* thead {
-  top: 0;
-  position: sticky;
-  z-index: 1;
-}
-
-tr td:nth-child(1),
-tr th:nth-child(1) {
+/* Make the first column sticky */
+.sticky-col {
   position: sticky;
   left: 0;
-  background-color: #fff;
   z-index: 2;
-  transform: translateX(0);
+  min-width: 100px; 
 }
 
-tr th:nth-child(1) {
-  left: 0;
-}
-
-tr td:last-child,
-tr th:last-child {
-  position: sticky;
-  right: 0;
-  background-color: #fff;
-  z-index: 2;
-  transform: translateX(0);
-}
-
-tr th:last-child {
-  right: 0;
-}
-
-.table-responsive {
+/* Add horizontal scrolling for the table */
+.table-wrapper {
   overflow-x: auto;
-  display: inline-block;
-} */
+  display: block;
+}
+
+.table-wrapper td:first-child,
+.table-wrapper th:first-child {
+  border-right: 0; 
+}
+
+/* Make the last column sticky */
+.sticky-col-last {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  min-width: 100px; 
+  background-color: #ffffff;
+}
+
+/* Adjust table cell styles for the last sticky column */
+.table-wrapper td:last-child,
+.table-wrapper th:last-child {
+  border-left: 0; 
+}
+

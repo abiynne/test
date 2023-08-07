@@ -154,6 +154,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       this.calculateTotalSum(); // Calculate the total sum again
     }
   }
+  
 
   deleteRow(index: number) {
     if (index > 0) {

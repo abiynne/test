@@ -160,7 +160,7 @@
                         <thead>
                             <tr style="width: 20px;">
                                 <!-- Heading Row -->
-                                <th class="d-none d-sm-block col py-3 align-items-center justify-content-start text-center"
+                                <th class="sticky-col d-none d-sm-block col py-3 align-items-center justify-content-start text-center"
                                     style="background-color: #80cbc4">
                                     <div class="time-sheet-box" style="white-space: nowrap;">
                                         <h6 class="fw-bold small text-sm">Project Name</h6>
@@ -179,7 +179,7 @@
                                 </ng-container>
 
                                 <!-- Total Hours section -->
-                                <th scope="col" class="col py-3 align-items-center justify-content-start"
+                                <th scope="col" class="sticky-col-last  col py-3 align-items-center justify-content-start"
                                     style="background-color: #80cbc4">
                                     <div class="time-sheet-box small text-sm">
                                         <span class="time-sheet-label fw-bold">Total Hours</span>
@@ -210,7 +210,7 @@
                             <!-- Data Rows -->
                             <tr>
                                 <td
-                                    class="col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
+                                    class="sticky-col col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
                                     <select class="form-select small text-sm" style="cursor: pointer; width: auto;">
                                         <option disabled selected hidden>Select Project</option>
                                         <option *ngFor="let project of projectName" [value]="project"
@@ -229,7 +229,7 @@
                                     </td>
                                 </ng-container>
 
-                                <td class="col d-flex border-0">
+                                <td class="sticky-col-last  col d-flex border-0">
                                     <div class="sum-box">
                                         <span class="fw-bold small" id="totalSum-{{i}}">{{ calculateRowTotal(row.hours)
                                             }}</span>
@@ -263,7 +263,7 @@
                         <tbody class="mb-3">
                             <tr class="border">
                                 <td
-                                    class="col d-none d-sm-block py-2 align-items-center justify-content-start border-0 bg-light">
+                                    class="sticky-col col d-none d-sm-block py-2 align-items-center justify-content-start border-0 bg-light">
                                     <div class="col py-1 d-flex align-items-center justify-content-center">
                                         <h6 class="fw-bold small">Total Hours</h6>
                                     </div>
@@ -278,7 +278,7 @@
                                     </td>
                                 </ng-container>
 
-                                <td class="col py-2 d-flex border-0 text-center bg-light">
+                                <td class="sticky-col-last  col py-2 d-flex border-0 text-center bg-light">
                                     <div class="sum-box">
                                         <span class="fw-bold small">{{ totalSum.toFixed(2) }}</span>
                                     </div>
