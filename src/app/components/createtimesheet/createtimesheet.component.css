@@ -115,7 +115,9 @@
   background-color: #61affe;
   color: white;
 }
-
+.m-width{
+  max-width: 320px;
+}
 @media (min-width: 320px) and (max-width: 767px) {
 
 .position-absolute-mobile{
