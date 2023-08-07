@@ -54,6 +54,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.highlightedRangeStart = {} as NgbDate;
     this.generateWeekDays();
     this.selectedWeek = '';
+
   }
 
   ngOnInit() {
@@ -205,7 +206,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   calculateColumnTotal(weekDay: number): string {
     let sum = 0;
     this.rows.forEach((row) => {
-      const value = parseFloat(row.hours[weekDay - 1]) || 0; // Consider empty text field as 0
+      const value = parseFloat(row.hours[weekDay - 0]) || 0; // Consider empty text field as 0
       if (!isNaN(value)) {
         sum += value;
       }
@@ -243,8 +244,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   generateWeekDays() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
-    const startDay = startDate.getDate();
-    const endDay = startDay + 6;
+    const startDay = this.showFirstHalf ? 1 : 16;
+    const endDay = this.showFirstHalf ? 15 : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
     const daysOfWeek: Date[] = [];
 
     for (let i = startDay; i <= endDay; i++) {
@@ -257,7 +258,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 
   getDaysOfWeek(date: NgbDateStruct): Date {
     const weekStartDay = 1; // Assuming week starts on Monday
-    const selectedDate = new Date(date.year, date.month - 1, date.day);
+    const selectedDate = new Date();
     const selectedDay = selectedDate.getDay();
 
     const diff = selectedDay >= weekStartDay ? selectedDay - weekStartDay : 7 - (weekStartDay - selectedDay);
@@ -286,6 +287,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateHighlightedRange();
     this.updateDropdownLabel();
     this.generateWeekButtons();
+    this.generateWeekDays(); // new method
   }
 
   nextMonth() {
@@ -294,6 +296,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateHighlightedRange();
     this.updateDropdownLabel();
     this.generateWeekButtons();
+    this.generateWeekDays(); //new method
   }
 
   isDayActive(date: NgbDate): boolean {
@@ -414,6 +417,16 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return this.showFirstHalf;
   }
 
+  showFirstHalff() {
+    this.showFirstHalf = true;
+    this.generateWeekDays();
+  }
+
+  showSecondHalf() {
+    this.showFirstHalf = false;
+    this.generateWeekDays();
+  }
+
   // for week buttons on right side
   generateWeekButtons() {
     const startDate = this.getDaysOfWeek(this.selectedDate);
@@ -423,17 +436,16 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     let currentDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
     currentDay.setDate(currentDay.getDate() - currentDay.getDay() + 1); // Start from the first day of the week
 
-    while (weeks.length < 6 && currentDay.getMonth() === startDate.getMonth()) {
+    while (weeks.length < 6 && currentDay.getMonth() === this.selectedDate.month - 0) {
       const weekStart = currentDay.getDate();
-      currentDay.setDate(currentDay.getDate() + 6); // Set to the last day of the week
+      const weekMonth = this.getMonthName(currentDay.getMonth() + 1);
+      currentDay.setDate(currentDay.getDate() + 6);
       const weekEnd = currentDay.getDate();
-      const monthName = this.getMonthName(currentDay.getMonth() + 1);
-      weeks.push({ start: weekStart, end: weekEnd, month: monthName });
-      currentDay.setDate(currentDay.getDate() + 1); // Move to the next day
+      weeks.push({ start: weekStart, end: weekEnd, month: weekMonth });
+      currentDay.setDate(currentDay.getDate() + 1);
     }
 
     this.weeks = weeks;
-
     const currentWeek = weeks.find(
       (week) =>
         week.start <= currentDate.getDate() &&
@@ -452,7 +464,6 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     return value === '' || (!isNaN(numericValue) && Number.isInteger(numericValue));
   }
 
-  // pop up a dialog for save
   showModal() {
     this.isModalVisible = true;
   }
