@@ -129,7 +129,7 @@
   text-align: center;
 }
 .text-center.mx-2.small.text-sm {
-  font-size:1vw !important;
+  font-size:0.85vw !important;
 }
 .table-responsive.padd-bottom{
   padding-bottom: 50px;
