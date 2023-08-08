@@ -222,7 +222,7 @@
 
                                 <ng-container *ngFor="let day of daysOfWeek; let j = index">
                                     <td class="col py-2 border-right border-0">
-                                        <input type="text" class="form-control mx-1" style="width: 60px;"
+                                        <input type="text" class="form-control mx-1 time-input" 
                                             pattern="[0-9]*" inputmode="numeric" placeholder="0.00"
                                             [(ngModel)]="row.hours[j]" (input)="calculateTotalSum()" maxlength="2"
                                             [ngClass]="{ 'is-invalid': !isValidInput(row.hours[j]) }" 
