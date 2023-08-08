@@ -150,8 +150,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       }
       this.rows.push(newRow);
       const newRowIdx = this.rows.length - 1;
-      this.clearTextFields(newRowIdx); // Call clearTextFields for the newly added row
-      this.calculateTotalSum(); // Calculate the total sum again
+      this.clearTextFields(newRowIdx); 
+      this.calculateTotalSum();
     }
   }
   
