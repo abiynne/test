@@ -125,12 +125,12 @@
 .time-input{
   padding: 0.25rem;
   font-size: 0.85rem;
-  width: 3.2rem;
+  width: 3rem;
   font-size: .85rem;
   text-align: center;
 }
 .text-center.mx-2.small.text-sm {
-  font-size: .85rem !important;
+  font-size: .80rem !important;
 }
 @media (min-width: 320px) and (max-width: 767px) {
 
