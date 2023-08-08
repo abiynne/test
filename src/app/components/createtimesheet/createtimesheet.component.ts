@@ -141,6 +141,14 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // display the dropdown options that are not already selected in rows
+  isProjectDisabled(project: string, rowIndex: number): boolean {
+    const selectedProjects = this.rows
+    .filter((row, index) => index !== rowIndex && row.project !== null)
+    .map(row => row.project);
+    return selectedProjects.includes(project);
+  }  
+
   addRow() {
     const dropdownCount = this.projectName.length;
     if (this.rows.length < dropdownCount) {
