@@ -306,8 +306,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateMinMaxDates();
     this.updateHighlightedRange();
     this.updateDropdownLabel();
-    this.generateWeekButtons();
     this.generateWeekDays(); // new method
+    this.generateWeekButtons();
     
   }
 
@@ -316,8 +316,8 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     this.updateMinMaxDates();
     this.updateHighlightedRange();
     this.updateDropdownLabel();
-    this.generateWeekButtons();
     this.generateWeekDays(); //new method
+    this.generateWeekButtons();
   }
 
   isDayActive(date: NgbDate): boolean {
