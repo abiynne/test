@@ -129,6 +129,9 @@
   font-size: .85rem;
   text-align: center;
 }
+.text-center.mx-2.small.text-sm {
+  font-size: .85rem !important;
+}
 @media (min-width: 320px) and (max-width: 767px) {
 
   .position-absolute-mobile {
