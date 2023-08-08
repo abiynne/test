@@ -124,16 +124,25 @@
 }
 .time-input{
   padding: 0.25rem;
-  width: 3rem;
+  width: 3.5vw;
   font-size: .85rem;
   text-align: center;
 }
 .text-center.mx-2.small.text-sm {
   font-size:1vw !important;
 }
+.table-responsive.padd-bottom{
+  padding-bottom: 50px;
+}
 @media (min-width: 320px) and (max-width: 767px) {
+  .table-responsive.padd-bottom{
+    padding-bottom: 0px;
+  }
   .text-center.mx-2.small.text-sm {
-    font-size:1rem !important;
+    font-size:0.70rem !important;
+  }
+  .time-input{
+    width: 3.5rem;
   }
   .position-absolute-mobile {
     position: absolute;
