@@ -158,10 +158,10 @@
                 <div class="container table-responsive">
                     <table class="table-wrapper border w-100">
                         <thead>
-                            <tr style="width: 20px;">
+                            <tr style="width: 20px;"   style="background-color: #80cbc4">
                                 <!-- Heading Row -->
                                 <th class="sticky-col d-none d-sm-block col py-3 align-items-center justify-content-start text-center"
-                                    style="background-color: #80cbc4">
+                                  >
                                     <div class="time-sheet-box" style="white-space: nowrap;">
                                         <h6 class="fw-bold small text-sm">Project Name</h6>
                                     </div>
@@ -170,7 +170,7 @@
                                 <!-- Days of the Week section -->
                                 <ng-container *ngFor="let day of daysOfWeek">
                                     <th scope="col py-3" class="col py-2 border-right"
-                                        style="background-color: #80cbc4">
+                                        >
                                         <div class="text-center mx-2 small text-sm">
                                             <div class="fw-bold">{{ day | date: 'EEE' }}</div>
                                             <div class="fw-bold">{{ day | date: 'd MMM' }}</div>
@@ -210,7 +210,7 @@
                             <!-- Data Rows -->
                             <tr>
                                 <td
-                                    class="sticky-col col py-2 align-items-center justify-content-start border-0 d-none d-sm-block">
+                                    class="sticky-col col py-2 px-2 align-items-center justify-content-start border-0 d-none d-sm-block">
                                     <select class="form-select small text-sm" style="cursor: pointer; width: auto;">
                                         <option disabled selected hidden>Select Project</option>
                                         <option *ngFor="let project of projectName" [value]="project"
