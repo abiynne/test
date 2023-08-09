@@ -130,7 +130,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
   toggleLeftSection() {
     this.isLeftSectionVisible = !this.isLeftSectionVisible;
   }
-  
+
 
   isCurrentDate(date: NgbDate): boolean {
     const currentDate = new Date();
@@ -154,7 +154,7 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
       this.calculateTotalSum(); // Calculate the total sum again
     }
   }
-  
+
 
   deleteRow(index: number) {
     if (index > 0) {
@@ -224,20 +224,30 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     const isFirstHalfSelected = this.showFirstHalf;
     const isCurrentDayInFirstHalf = currentDay.getDate() <= 15;
 
-    if ((isFirstHalfSelected && isCurrentDayInFirstHalf) || (!isFirstHalfSelected && !isCurrentDayInFirstHalf)) {
-        // Current day lies in the same half as selected or in the future half
-        return false;
+    // Determine if the selected day is in the first half of the currently displayed month
+    const isFirstHalfOfMonth = selectedDay.getDate() <= 15;
+    const isFirstHalfOfNextMonth = selectedDay.getMonth() === this.selectedDate.month && selectedDay.getDate() <= 15;
+
+    // Determine if the selected day is in the last 15 days of the previous month
+    const lastDayOfPreviousMonth = new Date(this.selectedDate.year, this.selectedDate.month - 1, 0).getDate();
+    const isLast15DaysOfPreviousMonth = selectedDay.getMonth() === this.selectedDate.month - 2 && selectedDay.getDate() > (lastDayOfPreviousMonth - 15);
+
+    // Determine if the input should be readonly based on the conditions
+    if ((isFirstHalfSelected && isCurrentDayInFirstHalf) ||
+      (!isFirstHalfSelected && (!isCurrentDayInFirstHalf || isFirstHalfOfNextMonth || isLast15DaysOfPreviousMonth)) &&
+      selectedDay <= currentDay) {
+      return false;
     } else {
-        // Current day is in a different half, make the input readonly
-        return true;
+      return true;
     }
-}
+  }
+
 
   // for clearing the input that was entered from th text field and from sum  field
   clearTextFields(rowIndex: number) {
     const rowInputs = $(`#row-${rowIndex} input[type="text"]`);
     const rowTotalElement = $(`#totalSum-${rowIndex}`);
-    
+
     rowInputs.val('');
     rowTotalElement.text('0.00');
 
@@ -259,24 +269,24 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
     }
 
     this.calculateTotalSum(); // Recalculate the total sum
-}
-
-
-generateWeekDays() {
-  const startDate = this.getDaysOfWeek(this.selectedDate);
-
-  const daysOfWeek: Date[] = [];
-
-  for (let i = 0; i < 15; i++) { // Generate 15 days
-    const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
-    daysOfWeek.push(date);
   }
 
-  this.daysOfWeek = daysOfWeek;
 
-  // Update the current selected week based on the generated daysOfWeek
-  this.selectedWeek = `${daysOfWeek[0].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[0].getFullYear()} to ${daysOfWeek[daysOfWeek.length - 1].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[daysOfWeek.length - 1].getFullYear()}`;
-}
+  generateWeekDays() {
+    const startDate = this.getDaysOfWeek(this.selectedDate);
+
+    const daysOfWeek: Date[] = [];
+
+    for (let i = 0; i < 15; i++) { // Generate 15 days
+      const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+      daysOfWeek.push(date);
+    }
+
+    this.daysOfWeek = daysOfWeek;
+
+    // Update the current selected week based on the generated daysOfWeek
+    this.selectedWeek = `${daysOfWeek[0].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[0].getFullYear()} to ${daysOfWeek[daysOfWeek.length - 1].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[daysOfWeek.length - 1].getFullYear()}`;
+  }
 
 
   getDaysOfWeek(date: NgbDateStruct): Date {
@@ -284,22 +294,22 @@ generateWeekDays() {
     const diff = this.showFirstHalf ? 0 : 15; // Add 15 days for the second half
     return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() + diff);
   }
-  
+
 
   showDays(week: { start: number, end: number, month: string }) {
     const startDate = this.getDaysOfWeek(this.selectedDate);
-  
+
     const daysOfWeek: Date[] = [];
-  
+
     for (let i = week.start - 1; i <= week.end - 1; i++) {
       const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
       daysOfWeek.push(date);
     }
-  
+
     this.daysOfWeek = daysOfWeek;
   }
-  
-  
+
+
 
   prevMonth() {
     this.selectedDate = this.calendar.getPrev(this.selectedDate as NgbDate, 'm', 1);
@@ -308,7 +318,7 @@ generateWeekDays() {
     this.updateDropdownLabel();
     this.generateWeekButtons();
     this.generateWeekDays(); // new method
-    
+
   }
 
   nextMonth() {
