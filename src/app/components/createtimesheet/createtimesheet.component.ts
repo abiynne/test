@@ -262,44 +262,44 @@ export class CreatetimesheetComponent implements OnInit, AfterViewInit {
 }
 
 
-  generateWeekDays() {
-    const startDate = this.getDaysOfWeek(this.selectedDate);
-    const startDay = this.showFirstHalf ? 1 : 16;
-    const endDay = this.showFirstHalf ? 15 : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
-    const daysOfWeek: Date[] = [];
+generateWeekDays() {
+  const startDate = this.getDaysOfWeek(this.selectedDate);
 
-    for (let i = startDay; i <= endDay; i++) {
-      const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
-      daysOfWeek.push(date);
-    }
+  const daysOfWeek: Date[] = [];
 
-    this.daysOfWeek = daysOfWeek;
+  for (let i = 0; i < 15; i++) { // Generate 15 days
+    const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
+    daysOfWeek.push(date);
   }
+
+  this.daysOfWeek = daysOfWeek;
+
+  // Update the current selected week based on the generated daysOfWeek
+  this.selectedWeek = `${daysOfWeek[0].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[0].getFullYear()} to ${daysOfWeek[daysOfWeek.length - 1].getDate()}-${this.getCurrentMonthName().substr(0, 3)}-${daysOfWeek[daysOfWeek.length - 1].getFullYear()}`;
+}
+
 
   getDaysOfWeek(date: NgbDateStruct): Date {
-    const weekStartDay = 1; // Assuming week starts on Monday
-    const selectedDate = new Date();
-    const selectedDay = selectedDate.getDay();
-
-    const diff = selectedDay >= weekStartDay ? selectedDay - weekStartDay : 7 - (weekStartDay - selectedDay);
-    const weekStartDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() - diff);
-
-    return weekStartDate;
+    const selectedDate = new Date(date.year, date.month - 1, 1);
+    const diff = this.showFirstHalf ? 0 : 15; // Add 15 days for the second half
+    return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate() + diff);
   }
+  
 
   showDays(week: { start: number, end: number, month: string }) {
     const startDate = this.getDaysOfWeek(this.selectedDate);
-    const startDay = week.start;
-    const endDay = week.end;
+  
     const daysOfWeek: Date[] = [];
-
-    for (let i = startDay; i <= endDay; i++) {
-      const date = new Date(startDate.getFullYear(), startDate.getMonth(), i);
+  
+    for (let i = week.start - 1; i <= week.end - 1; i++) {
+      const date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i);
       daysOfWeek.push(date);
     }
-
+  
     this.daysOfWeek = daysOfWeek;
   }
+  
+  
 
   prevMonth() {
     this.selectedDate = this.calendar.getPrev(this.selectedDate as NgbDate, 'm', 1);
